@@ -1,0 +1,36 @@
+{
+    "name": "dgame/php-type",
+    "description": "php type",
+    "license": "MIT",
+    "type": "library",
+    "homepage": "https://github.com/php-type",
+    "authors": [
+        {
+            "name": "Randy Schuett ",
+            "email": "rswhite4@gmail.com",
+            "homepage": "https://github.com/php-type"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ],
+        "files": [
+            "src/functions.php"
+        ],
+        "psr-4": {
+            "Dgame\\Type\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.*.*"
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ]
+    }
+}
