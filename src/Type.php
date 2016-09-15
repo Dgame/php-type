@@ -20,7 +20,7 @@ final class Type
     const TYPE_IMPLICIT = [
         'int'     => ['float', 'numeric'],
         'float'   => ['int', 'numeric'],
-        'numeric' => ['int', 'float', 'bool'],
+        'numeric' => ['int', 'float', 'bool', 'string'],
         'bool'    => ['int', 'float', 'numeric'],
     ];
 
