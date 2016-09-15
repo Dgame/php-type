@@ -22,7 +22,7 @@ class TestType extends TestCase
     public function testImplicit()
     {
         $this->assertTrue(typeof(0.0)->isImplicit('int'));
-        $this->assertFalse(typeof(0.0)->isImplicit('string'));
+        $this->assertTrue(typeof(0.0)->isImplicit('string'));
         $this->assertTrue(typeof('0')->isImplicit('int'));
         $this->assertTrue(typeof('0')->isImplicit('float'));
         $this->assertTrue(typeof('0')->isImplicit('bool'));
