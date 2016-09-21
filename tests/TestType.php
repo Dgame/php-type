@@ -43,9 +43,15 @@ class TestType extends TestCase
     public function testIsSameAs()
     {
         $this->assertTrue(typeof(0.0)->isSameAs(typeof(3.14)));
+        $this->assertFalse(typeof(0.0)->isSameAs(typeof(3)));
         $this->assertTrue(typeof(0)->isSameAs(typeof(4)));
+        $this->assertFalse(typeof(0)->isSameAs(typeof(3.14)));
         $this->assertTrue(typeof('a')->isSameAs(typeof('b')));
+        $this->assertFalse(typeof('a')->isSameAs(typeof('0')));
+        $this->assertFalse(typeof('a')->isSameAs(typeof(0)));
         $this->assertTrue(typeof('0')->isSameAs(typeof('42')));
+        $this->assertFalse(typeof('0')->isSameAs(typeof('a')));
+        $this->assertFalse(typeof('0')->isSameAs(typeof(0)));
     }
 
     public function testIsConvertibleTo()
@@ -53,6 +59,7 @@ class TestType extends TestCase
         $this->assertTrue(typeof(0.0)->isConvertibleTo(typeof(0)));
         $this->assertTrue(typeof(0)->isConvertibleTo(typeof(0.0)));
         $this->assertTrue(typeof(0)->isConvertibleTo(typeof('4')));
+        $this->assertTrue(typeof('a')->isConvertibleTo(typeof('b')));
         $this->assertFalse(typeof('a')->isConvertibleTo(typeof(42)));
         $this->assertTrue(typeof('0')->isConvertibleTo(typeof(42)));
     }
