@@ -175,4 +175,32 @@ final class Type
 
         return false;
     }
+
+    /**
+     * @param Type $type
+     *
+     * @return bool
+     */
+    public function isSameAs(Type $type): bool
+    {
+        return $type->getType() === $this->type;
+    }
+
+    /**
+     * @param Type $type
+     *
+     * @return bool
+     */
+    public function isConvertibleTo(Type $type): bool
+    {
+        if ($this->isSameAs($type)) {
+            return true;
+        }
+
+        if (array_key_exists($this->type, self::TYPE_IMPLICIT)) {
+            return in_array($type->getType(), self::TYPE_IMPLICIT[$this->type]);
+        }
+
+        return false;
+    }
 }
