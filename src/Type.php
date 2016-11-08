@@ -45,12 +45,12 @@ final class Type
     /**
      * Type constructor.
      *
-     * @param TypeInfo $typeInfo
+     * @param TypeId $typeId
      */
-    public function __construct(TypeInfo $typeInfo)
+    public function __construct(TypeId $typeId)
     {
-        $this->type = $typeInfo->getType();
-        $this->name = $typeInfo->getName();
+        $this->type = $typeId->getType();
+        $this->name = $typeId->getName();
     }
 
     /**

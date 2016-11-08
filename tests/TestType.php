@@ -1,5 +1,6 @@
 <?php
 
+use function Dgame\Type\typeid;
 use PHPUnit\Framework\TestCase;
 use function Dgame\Type\typeof;
 
@@ -62,5 +63,11 @@ class TestType extends TestCase
         $this->assertTrue(typeof('a')->isConvertibleTo(typeof('b')));
         $this->assertFalse(typeof('a')->isConvertibleTo(typeof(42)));
         $this->assertTrue(typeof('0')->isConvertibleTo(typeof(42)));
+    }
+
+    public function testDefaultValue()
+    {
+        $this->assertEquals(0.0, typeof(0.0)->getDefaultValue());
+        $this->assertEquals(0.0, typeid('float')->getDefaultValue());
     }
 }

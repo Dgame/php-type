@@ -6,7 +6,7 @@ namespace Dgame\Type;
  * Class TypeInfo
  * @package Dgame\Type
  */
-final class TypeInfo
+class TypeOf extends TypeId
 {
     const TYPE_ALIAS = [
         'integer' => 'int',
@@ -34,51 +34,31 @@ final class TypeInfo
     ];
 
     /**
-     * @var string
-     */
-    private $type;
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
      * Typeof constructor.
      *
      * @param $value
      */
     public function __construct($value)
     {
-        foreach (self::TYPE_CALLBACKS as $type => $callback) {
+        $type = null;
+        $name = null;
+
+        foreach (self::TYPE_CALLBACKS as $typeId => $callback) {
             if ($callback($value)) {
-                $this->type = $type;
-                $this->name = $type;
+                $type = $typeId;
+                $name = $typeId;
                 break;
             }
         }
 
-        if (array_key_exists($this->type, self::TYPE_ALIAS)) {
-            $this->type = self::TYPE_ALIAS[$this->type];
+        if (array_key_exists($type, self::TYPE_ALIAS)) {
+            $type = self::TYPE_ALIAS[$type];
         }
 
-        if (array_key_exists($this->name, self::TYPE_NAME)) {
-            $this->name = call_user_func(self::TYPE_NAME[$this->name], $value);
+        if (array_key_exists($name, self::TYPE_NAME)) {
+            $name = call_user_func(self::TYPE_NAME[$name], $value);
         }
-    }
 
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
+        parent::__construct($type, $name);
     }
 }
