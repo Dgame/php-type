@@ -24,6 +24,15 @@ final class Type
         'bool'    => ['int', 'float', 'numeric', 'string'],
     ];
 
+    const DEFAULT_VALUES = [
+        'int'     => 0,
+        'float'   => 0.0,
+        'numeric' => 0,
+        'string'  => '',
+        'bool'    => false,
+        'array'   => []
+    ];
+
     /**
      * @var string
      */
@@ -202,5 +211,17 @@ final class Type
         }
 
         return false;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getDefaultValue()
+    {
+        if (array_key_exists($this->type, self::DEFAULT_VALUES)) {
+            return self::DEFAULT_VALUES[$this->type];
+        }
+
+        return null;
     }
 }
