@@ -3,10 +3,10 @@
 namespace Dgame\Type;
 
 /**
- * Class TypeInfo
+ * Class TypeId
  * @package Dgame\Type
  */
-class TypeInfo
+class TypeId
 {
     /**
      * @var string
