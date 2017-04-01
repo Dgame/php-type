@@ -15,9 +15,13 @@ class TypeTest extends TestCase
         $this->assertTrue(typeof('0')->isNumeric());
         $this->assertTrue(typeof([])->isArray());
         $this->assertTrue(typeof(new self())->isObject());
-        $this->assertTrue(typeof(new self())->equals(new self()));
         $this->assertFalse(typeof(null)->isObject());
         $this->assertTrue(typeof(null)->isNull());
+    }
+
+    public function testEquals()
+    {
+        $this->assertTrue(typeof(new self())->equals(new self()));
         $this->assertTrue(typeof(null)->equals(null));
     }
 
@@ -64,7 +68,7 @@ class TypeTest extends TestCase
         $this->assertFalse(typeof('0')->isSame(typeof(0)));
     }
 
-    public function testisImplicitSame()
+    public function testIsImplicitSame()
     {
         $this->assertTrue(typeof(0.0)->isImplicitSame(typeof(0)));
         $this->assertTrue(typeof(0)->isImplicitSame(typeof(0.0)));
@@ -104,6 +108,7 @@ class TypeTest extends TestCase
         $this->assertFalse(Type::isEmptyValue('0'));
         $this->assertFalse(Type::isEmptyValue(0));
         $this->assertFalse(Type::isEmptyValue(false));
+        $this->assertFalse(Type::isEmptyValue(true));
         $this->assertTrue(Type::isEmptyValue(null));
         $this->assertTrue(Type::isEmptyValue([]));
         $this->assertFalse(Type::isEmptyValue([1, 2, 3]));
@@ -117,6 +122,7 @@ class TypeTest extends TestCase
         $this->assertTrue(Type::isValidValue('0'));
         $this->assertTrue(Type::isValidValue(0));
         $this->assertFalse(Type::isValidValue(false));
+        $this->assertTrue(Type::isValidValue(true));
         $this->assertFalse(Type::isValidValue(null));
         $this->assertFalse(Type::isValidValue([]));
         $this->assertTrue(Type::isValidValue([1, 2, 3]));
