@@ -182,13 +182,13 @@ final class Type
     }
 
     /**
-     * @param $value
+     * @param $expression
      *
      * @return bool
      */
-    public function equals($value): bool
+    public function equals($expression): bool
     {
-        return $this->isSame(self::of($value));
+        return $this->isSame(self::of($expression));
     }
 
     /**
@@ -264,6 +264,30 @@ final class Type
     }
 
     /**
+     * @return mixed
+     */
+    public function getDefaultValue()
+    {
+        return self::DEFAULT_VALUES[$this->type];
+    }
+
+    /**
+     * @return string
+     */
+    public function export(): string
+    {
+        return self::EXPORT[$this->type];
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->export();
+    }
+
+    /**
      * @param $expression
      *
      * @return bool
@@ -299,29 +323,5 @@ final class Type
             default:
                 return true;
         }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDefaultValue()
-    {
-        return self::DEFAULT_VALUES[$this->type];
-    }
-
-    /**
-     * @return string
-     */
-    public function export(): string
-    {
-        return self::EXPORT[$this->type];
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->export();
     }
 }
