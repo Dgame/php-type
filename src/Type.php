@@ -2,79 +2,201 @@
 
 namespace Dgame\Type;
 
+use Exception;
+
 /**
  * Class Type
  * @package Dgame\Type
  */
 final class Type
 {
-    const TYPE_BUILTIN = [
-        'int',
-        'float',
-        'numeric',
-        'string',
-        'bool',
-        'array'
+    const IS_INT      = 1 << 0;
+    const IS_NUMERIC  = 1 << 1;
+    const IS_FLOAT    = 1 << 2;
+    const IS_STRING   = 1 << 3;
+    const IS_BOOL     = 1 << 4;
+    const IS_ARRAY    = 1 << 5;
+    const IS_OBJECT   = 1 << 6;
+    const IS_CALLABLE = 1 << 7;
+    const IS_NULL     = 1 << 8;
+
+    const TYPES = [
+        self::IS_INT      => 'is_int',
+        self::IS_FLOAT    => 'is_float',
+        self::IS_NUMERIC  => 'is_numeric',
+        self::IS_STRING   => 'is_string',
+        self::IS_BOOL     => 'is_bool',
+        self::IS_ARRAY    => 'is_array',
+        self::IS_OBJECT   => 'is_object',
+        self::IS_CALLABLE => 'is_callable',
+        self::IS_NULL     => 'is_null'
     ];
 
-    const TYPE_IMPLICIT = [
-        'int'     => ['float', 'numeric', 'string'],
-        'float'   => ['int', 'numeric', 'string'],
-        'numeric' => ['int', 'float', 'bool', 'string'],
-        'bool'    => ['int', 'float', 'numeric', 'string'],
+    const EXPORT = [
+        self::IS_INT      => 'int',
+        self::IS_FLOAT    => 'float',
+        self::IS_NUMERIC  => 'numeric',
+        self::IS_STRING   => 'string',
+        self::IS_BOOL     => 'bool',
+        self::IS_ARRAY    => 'array',
+        self::IS_OBJECT   => 'object',
+        self::IS_CALLABLE => 'callable',
+        self::IS_NULL     => 'null'
+    ];
+
+    const COVARIANCE = [
+        self::IS_INT     => [
+            self::IS_FLOAT,
+            self::IS_NUMERIC,
+            self::IS_STRING,
+            self::IS_BOOL
+        ],
+        self::IS_FLOAT   => [
+            self::IS_INT,
+            self::IS_NUMERIC,
+            self::IS_STRING,
+            self::IS_BOOL
+        ],
+        self::IS_BOOL    => [
+            self::IS_INT,
+            self::IS_NUMERIC,
+            self::IS_FLOAT,
+            self::IS_STRING
+        ],
+        self::IS_NUMERIC => [
+            self::IS_INT,
+            self::IS_FLOAT,
+            self::IS_BOOL,
+            self::IS_STRING
+        ]
+    ];
+
+    const BUILT_IN = [
+        self::IS_INT,
+        self::IS_FLOAT,
+        self::IS_NUMERIC,
+        self::IS_STRING,
+        self::IS_BOOL,
+        self::IS_ARRAY,
+        self::IS_NULL
     ];
 
     const DEFAULT_VALUES = [
-        'int'     => 0,
-        'float'   => 0.0,
-        'numeric' => 0,
-        'string'  => '',
-        'bool'    => false,
-        'array'   => []
+        self::IS_INT      => 0,
+        self::IS_FLOAT    => 0.0,
+        self::IS_NUMERIC  => '0',
+        self::IS_STRING   => '',
+        self::IS_BOOL     => false,
+        self::IS_ARRAY    => [],
+        self::IS_OBJECT   => null,
+        self::IS_CALLABLE => null,
+        self::IS_NULL     => null
     ];
 
     /**
-     * @var string
+     * @var int
      */
     private $type;
-    /**
-     * @var string
-     */
-    private $name;
 
     /**
      * Type constructor.
      *
-     * @param TypeId $typeId
+     * @param int $type
      */
-    public function __construct(TypeId $typeId)
+    private function __construct(int $type)
     {
-        $this->type = $typeId->getType();
-        $this->name = $typeId->getName();
+        $this->type = $type;
     }
 
     /**
-     * @return string
+     * @param $expression
+     *
+     * @return Type
+     * @throws Exception
      */
-    public function getName(): string
+    public static function of($expression): self
     {
-        return $this->name;
+        foreach (self::TYPES as $type => $callback) {
+            if ($callback($expression)) {
+                return new self($type);
+            }
+        }
+
+        throw new Exception('Unknown expression: ' . $expression);
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getType(): string
+    public function getType(): int
     {
         return $this->type;
     }
 
     /**
+     * @param int $type
+     *
      * @return bool
      */
-    public function isBuiltin(): bool
+    public function is(int $type): bool
     {
-        return in_array($this->type, self::TYPE_BUILTIN);
+        return $this->type === $type;
+    }
+
+    /**
+     * @param Type $type
+     *
+     * @return bool
+     */
+    public function isSame(self $type): bool
+    {
+        return $type->is($this->type);
+    }
+
+    /**
+     * @param int $type
+     *
+     * @return bool
+     */
+    public function isImplicit(int $type): bool
+    {
+        if ($this->is($type)) {
+            return true;
+        }
+
+        if (array_key_exists($this->type, self::COVARIANCE)) {
+            return in_array($type, self::COVARIANCE[$this->type]);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Type $type
+     *
+     * @return bool
+     */
+    public function isImplicitSame(self $type): bool
+    {
+        return $this->isImplicit($type->getType());
+    }
+
+    /**
+     * @param $value
+     *
+     * @return bool
+     */
+    public function equals($value): bool
+    {
+        return $this->isSame(self::of($value));
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBuiltIn(): bool
+    {
+        return in_array($this->type, self::BUILT_IN);
     }
 
     /**
@@ -82,7 +204,7 @@ final class Type
      */
     public function isInt(): bool
     {
-        return $this->is('int');
+        return $this->is(self::IS_INT);
     }
 
     /**
@@ -90,7 +212,7 @@ final class Type
      */
     public function isFloat(): bool
     {
-        return $this->is('float');
+        return $this->is(self::IS_FLOAT);
     }
 
     /**
@@ -98,7 +220,7 @@ final class Type
      */
     public function isNumeric(): bool
     {
-        return $this->is('numeric');
+        return $this->is(self::IS_NUMERIC);
     }
 
     /**
@@ -106,7 +228,7 @@ final class Type
      */
     public function isString(): bool
     {
-        return $this->is('string');
+        return $this->is(self::IS_STRING);
     }
 
     /**
@@ -114,7 +236,7 @@ final class Type
      */
     public function isBool(): bool
     {
-        return $this->is('bool');
+        return $this->is(self::IS_BOOL);
     }
 
     /**
@@ -122,15 +244,7 @@ final class Type
      */
     public function isArray(): bool
     {
-        return $this->is('array');
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNull(): bool
-    {
-        return $this->is('null');
+        return $this->is(self::IS_ARRAY);
     }
 
     /**
@@ -138,90 +252,76 @@ final class Type
      */
     public function isObject(): bool
     {
-        return $this->is('object');
+        return $this->is(self::IS_OBJECT);
     }
 
     /**
      * @return bool
      */
-    public function isResource(): bool
+    public function isNull(): bool
     {
-        return $this->is('resource');
+        return $this->is(self::IS_NULL);
     }
 
     /**
-     * @return bool
-     */
-    public function isCallback(): bool
-    {
-        return $this->is('callable');
-    }
-
-    /**
-     * @param string $type
+     * @param $expression
      *
      * @return bool
      */
-    public function is(string $type): bool
+    public static function isEmptyValue($expression): bool
     {
-        return $this->type === $type || $this->name === $type;
+        switch (self::of($expression)->getType()) {
+            case self::IS_NULL:
+                return true;
+            case self::IS_STRING:
+            case self::IS_ARRAY:
+                return empty($expression);
+            default:
+                return false;
+        }
     }
 
     /**
-     * @param string $type
+     * @param $expression
      *
      * @return bool
      */
-    public function isImplicit(string $type): bool
+    public static function isValidValue($expression): bool
     {
-        if ($this->is($type)) {
-            return true;
+        switch (self::of($expression)->getType()) {
+            case self::IS_NULL:
+                return false;
+            case self::IS_STRING:
+            case self::IS_ARRAY:
+                return !empty($expression);
+            case self::IS_BOOL:
+                return $expression !== false;
+            default:
+                return true;
         }
-
-        if (array_key_exists($this->type, self::TYPE_IMPLICIT)) {
-            return in_array($type, self::TYPE_IMPLICIT[$this->type]);
-        }
-
-        return false;
     }
 
     /**
-     * @param Type $type
-     *
-     * @return bool
-     */
-    public function isSameAs(Type $type): bool
-    {
-        return $type->getType() === $this->type;
-    }
-
-    /**
-     * @param Type $type
-     *
-     * @return bool
-     */
-    public function isConvertibleTo(Type $type): bool
-    {
-        if ($this->isSameAs($type)) {
-            return true;
-        }
-
-        if (array_key_exists($this->type, self::TYPE_IMPLICIT)) {
-            return in_array($type->getType(), self::TYPE_IMPLICIT[$this->type]);
-        }
-
-        return false;
-    }
-
-    /**
-     * @return mixed|null
+     * @return mixed
      */
     public function getDefaultValue()
     {
-        if (array_key_exists($this->type, self::DEFAULT_VALUES)) {
-            return self::DEFAULT_VALUES[$this->type];
-        }
+        return self::DEFAULT_VALUES[$this->type];
+    }
 
-        return null;
+    /**
+     * @return string
+     */
+    public function export(): string
+    {
+        return self::EXPORT[$this->type];
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->export();
     }
 }

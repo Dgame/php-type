@@ -3,21 +3,11 @@
 namespace Dgame\Type;
 
 /**
- * @param $value
+ * @param $expression
  *
  * @return Type
  */
-function typeof($value): Type
+function typeof($expression): Type
 {
-    return new Type(new TypeOf($value));
-}
-
-/**
- * @param string $type
- *
- * @return Type
- */
-function typeid(string $type): Type
-{
-    return new Type(new TypeId($type));
+    return Type::of($expression);
 }
