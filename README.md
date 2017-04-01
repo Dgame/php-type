@@ -85,7 +85,7 @@ $this->assertEquals('', typeof('abc')->getDefaultValue());
 $this->assertEquals(false, typeof(true)->getDefaultValue());
 $this->assertEquals([], typeof([1, 2, 3])->getDefaultValue());
 $this->assertEquals(null, typeof(null)->getDefaultValue());
-$this->assertEquals(null, typeof(new self())->getDefaultValue());
+$this->assertEquals(null, typeof(new Exception())->getDefaultValue());
 ```
 
 ### export
@@ -96,7 +96,7 @@ $this->assertEquals('string', typeof('abc')->export());
 $this->assertEquals('bool', typeof(true)->export());
 $this->assertEquals('array', typeof([1, 2, 3])->export());
 $this->assertEquals('null', typeof(null)->export());
-$this->assertEquals('object', typeof(new self())->export());
+$this->assertEquals('object', typeof(new Exception())->export());
 ```
 
 ### isEmptyValue
