@@ -358,10 +358,8 @@ final class Type
             case self::IS_STRING:
             case self::IS_ARRAY:
                 return !empty($expression);
-            case self::IS_BOOL:
-                return $expression !== false;
             default:
-                return true;
+                return $expression !== false;
         }
     }
 }
