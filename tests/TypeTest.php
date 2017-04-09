@@ -120,6 +120,21 @@ class TypeTest extends TestCase
         $this->assertTrue(typeof('0')->isImplicitSame(typeof(42)));
     }
 
+    public function testAccept()
+    {
+        $this->assertTrue(typeof(0)->accept('0'));
+        $this->assertTrue(typeof(0)->accept(0));
+        $this->assertTrue(typeof(0)->accept(0.1));
+        $this->assertTrue(typeof(0)->accept(false));
+        $this->assertFalse(typeof(0)->accept(null));
+        $this->assertFalse(typeof(0)->accept('abc'));
+        $this->assertTrue(typeof(true)->accept(false));
+        $this->assertTrue(typeof(true)->accept(1));
+        $this->assertTrue(typeof(true)->accept(3.14));
+        $this->assertFalse(typeof(true)->accept(null));
+        $this->assertFalse(typeof(true)->accept('abc'));
+    }
+
     public function testDefaultValue()
     {
         $this->assertEquals(0, typeof(42)->getDefaultValue());

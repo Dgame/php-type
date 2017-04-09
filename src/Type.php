@@ -205,6 +205,16 @@ final class Type
      *
      * @return bool
      */
+    public function accept($expression): bool
+    {
+        return self::of($expression)->isImplicit($this->type);
+    }
+
+    /**
+     * @param $expression
+     *
+     * @return bool
+     */
     public function equals($expression): bool
     {
         return $this->isSame(self::of($expression));
