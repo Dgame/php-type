@@ -3,6 +3,7 @@
 namespace Dgame\Type;
 
 use Exception;
+use ReflectionParameter;
 
 /**
  * Class Type
@@ -20,15 +21,15 @@ final class Type
     const IS_CALLABLE = 1 << 7;
     const IS_NULL     = 1 << 8;
 
-    const TYPES = [
+    const TYPE_CALLBACK = [
         self::IS_INT      => 'is_int',
         self::IS_FLOAT    => 'is_float',
         self::IS_NUMERIC  => 'is_numeric',
         self::IS_STRING   => 'is_string',
         self::IS_BOOL     => 'is_bool',
-        self::IS_ARRAY    => 'is_array',
-        self::IS_OBJECT   => 'is_object',
         self::IS_CALLABLE => 'is_callable',
+        self::IS_OBJECT   => 'is_object',
+        self::IS_ARRAY    => 'is_array',
         self::IS_NULL     => 'is_null'
     ];
 
@@ -116,13 +117,31 @@ final class Type
      */
     public static function of($expression): self
     {
-        foreach (self::TYPES as $type => $callback) {
+        foreach (self::TYPE_CALLBACK as $type => $callback) {
             if ($callback($expression)) {
                 return new self($type);
             }
         }
 
         throw new Exception('Unknown expression: ' . $expression);
+    }
+
+    /**
+     * @param ReflectionParameter $parameter
+     *
+     * @return Type
+     * @throws Exception
+     */
+    public static function from(ReflectionParameter $parameter): self
+    {
+        if ($parameter->hasType()) {
+            $type = $parameter->getType()->isBuiltin() ? array_search((string) $parameter->getType(), self::EXPORT) : self::IS_OBJECT;
+            if ($type !== false) {
+                return new self($type);
+            }
+        }
+
+        throw new Exception('No or invalid type');
     }
 
     /**
@@ -261,6 +280,14 @@ final class Type
     public function isNull(): bool
     {
         return $this->is(self::IS_NULL);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCallable(): bool
+    {
+        return $this->is(self::IS_CALLABLE);
     }
 
     /**

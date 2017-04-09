@@ -17,6 +17,47 @@ class TypeTest extends TestCase
         $this->assertTrue(typeof(new self())->isObject());
         $this->assertFalse(typeof(null)->isObject());
         $this->assertTrue(typeof(null)->isNull());
+        $this->assertTrue(typeof([self::class, 'testTypeof'])->isCallable());
+        $this->assertTrue(typeof(function () {})->isCallable());
+    }
+
+    public function testFrom()
+    {
+        $functions = [
+            Type::IS_INT      => function (int $foo) {
+            },
+            Type::IS_ARRAY    => function (array $foo) {
+            },
+            Type::IS_CALLABLE => function (callable $foo) {
+            },
+            Type::IS_OBJECT   => function (self $foo) {
+            }
+        ];
+        $values    = [
+            Type::IS_INT      => [0, 42, 23, -1],
+            Type::IS_ARRAY    => [[], [1], [1, 2, 3]],
+            Type::IS_CALLABLE => $functions,
+            Type::IS_OBJECT   => [new Exception()]
+        ];
+
+        foreach ($functions as $expected => $function) {
+            $reflection = new ReflectionFunction($function);
+            $type       = Type::from($reflection->getParameters()[0]);
+
+            $this->assertEquals($expected, $type->getType());
+
+            foreach ($values[$expected] as $value) {
+                $this->assertTrue($type->isImplicitSame(typeof($value)));
+            }
+        }
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('No or invalid type');
+
+        $reflection = new ReflectionFunction(function ($mixed) {
+        });
+
+        Type::from($reflection->getParameters()[0]);
     }
 
     public function testEquals()
