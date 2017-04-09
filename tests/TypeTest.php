@@ -18,7 +18,8 @@ class TypeTest extends TestCase
         $this->assertFalse(typeof(null)->isObject());
         $this->assertTrue(typeof(null)->isNull());
         $this->assertTrue(typeof([self::class, 'testTypeof'])->isCallable());
-        $this->assertTrue(typeof(function () {})->isCallable());
+        $this->assertTrue(typeof(function () {
+        })->isCallable());
     }
 
     public function testFrom()
