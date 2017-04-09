@@ -11,7 +11,7 @@ Get the type of a variable, prove that the type is builtin or compare it with an
 
 ## Methods
 
-### is
+### is*
 ```php
 $this->assertTrue(typeof(0.0)->isFloat());
 $this->assertTrue(typeof(0)->isInt());
@@ -19,14 +19,17 @@ $this->assertTrue(typeof('')->isString());
 $this->assertTrue(typeof('a')->isString());
 $this->assertTrue(typeof('0')->isNumeric());
 $this->assertTrue(typeof([])->isArray());
-$this->assertTrue(typeof(new Exception())->isObject());
+$this->assertTrue(typeof(new self())->isObject());
 $this->assertFalse(typeof(null)->isObject());
 $this->assertTrue(typeof(null)->isNull());
+$this->assertTrue(typeof([self::class, 'testTypeof'])->isCallable());
+$this->assertTrue(typeof(function () {
+})->isCallable());
 ```
 
 ### equals
 ```php
-$this->assertTrue(typeof(new Exception())->equals(new Exception()));
+$this->assertTrue(typeof(new self())->equals(new self()));
 $this->assertTrue(typeof(null)->equals(null));
 ```
 
@@ -81,6 +84,21 @@ $this->assertTrue(typeof(0)->isImplicitSame(typeof('4')));
 $this->assertTrue(typeof('a')->isImplicitSame(typeof('b')));
 $this->assertFalse(typeof('a')->isImplicitSame(typeof(42)));
 $this->assertTrue(typeof('0')->isImplicitSame(typeof(42)));
+```
+
+### accept
+```php
+$this->assertTrue(typeof(0)->accept('0'));
+$this->assertTrue(typeof(0)->accept(0));
+$this->assertTrue(typeof(0)->accept(0.1));
+$this->assertTrue(typeof(0)->accept(false));
+$this->assertFalse(typeof(0)->accept(null));
+$this->assertFalse(typeof(0)->accept('abc'));
+$this->assertTrue(typeof(true)->accept(false));
+$this->assertTrue(typeof(true)->accept(1));
+$this->assertTrue(typeof(true)->accept(3.14));
+$this->assertFalse(typeof(true)->accept(null));
+$this->assertFalse(typeof(true)->accept('abc'));
 ```
 
 ### getDefaultValue
