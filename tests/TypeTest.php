@@ -53,7 +53,7 @@ class TypeTest extends TestCase
         }
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('No or invalid type');
+        $this->expectExceptionMessage('Parameter has no type');
 
         $reflection = new ReflectionFunction(function ($mixed) {
         });

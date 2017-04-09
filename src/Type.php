@@ -4,6 +4,7 @@ namespace Dgame\Type;
 
 use Exception;
 use ReflectionParameter;
+use function Dgame\Ensurance\enforce;
 
 /**
  * Class Type
@@ -134,14 +135,16 @@ final class Type
      */
     public static function from(ReflectionParameter $parameter): self
     {
-        if ($parameter->hasType()) {
-            $type = $parameter->getType()->isBuiltin() ? array_search((string) $parameter->getType(), self::EXPORT) : self::IS_OBJECT;
-            if ($type !== false) {
-                return new self($type);
-            }
+        enforce($parameter->hasType())->orThrow('Parameter has no type');
+
+        if (!$parameter->getType()->isBuiltin()) {
+            return new self(self::IS_OBJECT);
         }
 
-        throw new Exception('No or invalid type');
+        $type = array_search((string) $parameter->getType(), self::EXPORT);
+        enforce($type !== false)->orThrow('No type found');
+
+        return new self($type);
     }
 
     /**
