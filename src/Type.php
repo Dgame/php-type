@@ -352,14 +352,10 @@ final class Type
      */
     public static function isValidValue($expression): bool
     {
-        switch (self::of($expression)->getType()) {
-            case self::IS_NULL:
-                return false;
-            case self::IS_STRING:
-            case self::IS_ARRAY:
-                return !empty($expression);
-            default:
-                return $expression !== false;
+        if (self::isEmptyValue($expression)) {
+            return false;
         }
+
+        return $expression !== false;
     }
 }
