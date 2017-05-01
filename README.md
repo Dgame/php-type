@@ -1,10 +1,10 @@
 # php-type
 
-[![Build Status](https://travis-ci.org/Dgame/php-type.svg?branch=master)](https://travis-ci.org/Dgame/php-type)
-[![Build Status](https://scrutinizer-ci.com/g/Dgame/php-type/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Dgame/php-type/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Dgame/php-type/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Dgame/php-type/?branch=master)
-[![codecov](https://codecov.io/gh/Dgame/php-type/branch/master/graph/badge.svg)](https://codecov.io/gh/Dgame/php-type)
+[![Code Coverage](https://scrutinizer-ci.com/g/Dgame/php-type/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Dgame/php-type/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/Dgame/php-type/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Dgame/php-type/build-status/master)
 [![StyleCI](https://styleci.io/repos/68286580/shield?branch=master)](https://styleci.io/repos/68286580)
+[![Build Status](https://travis-ci.org/Dgame/php-type.svg?branch=master)](https://travis-ci.org/Dgame/php-type)
 
 Type comparisons on a whole new level.
 Get the type of a variable, prove that the type is builtin or compare it with another type.
