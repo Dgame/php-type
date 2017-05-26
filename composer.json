@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=7.0",
-        "dgame/php-ensurance": "*"
+        "dgame/php-ensurance": ">=0.5.0"
     },
     "autoload": {
         "classmap": [
