@@ -335,42 +335,7 @@ final class Type
     public static function import(string $type)
     {
         $key = array_search($type, self::EXPORT);
-        if ($key !== false) {
-            return new self($key);
-        }
 
-        return null;
-    }
-
-    /**
-     * @param $expression
-     *
-     * @return bool
-     */
-    public static function isEmptyValue($expression): bool
-    {
-        switch (self::of($expression)->getType()) {
-            case self::IS_NULL:
-                return true;
-            case self::IS_STRING:
-            case self::IS_ARRAY:
-                return empty($expression);
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * @param $expression
-     *
-     * @return bool
-     */
-    public static function isValidValue($expression): bool
-    {
-        if (self::isEmptyValue($expression)) {
-            return false;
-        }
-
-        return $expression !== false;
+        return $key !== false ? new self($key) : null;
     }
 }
