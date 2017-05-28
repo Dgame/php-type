@@ -328,6 +328,21 @@ final class Type
     }
 
     /**
+     * @param string $type
+     *
+     * @return Type|null
+     */
+    public static function import(string $type)
+    {
+        $key = array_search($type, self::EXPORT);
+        if ($key !== false) {
+            return new self($key);
+        }
+
+        return null;
+    }
+
+    /**
      * @param $expression
      *
      * @return bool

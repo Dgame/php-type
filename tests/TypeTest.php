@@ -157,6 +157,16 @@ class TypeTest extends TestCase
         $this->assertEquals('object', typeof(new self())->export());
     }
 
+    public function testImport()
+    {
+        $this->assertEquals('int', Type::import('int')->export());
+        $this->assertEquals('float', Type::import('float')->export());
+        $this->assertEquals('bool', Type::import('bool')->export());
+        $this->assertEquals('array', Type::import('array')->export());
+        $this->assertEquals('object', Type::import('object')->export());
+        $this->assertNull(Type::import('abc'));
+    }
+
     public function testEmptyValue()
     {
         $this->assertTrue(Type::isEmptyValue(''));
