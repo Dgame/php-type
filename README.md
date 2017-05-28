@@ -123,34 +123,45 @@ $this->assertEquals('null', typeof(null)->export());
 $this->assertEquals('object', typeof(new Exception())->export());
 ```
 
+### import
+Import type by name
+```php
+$this->assertEquals('int', Type::import('int')->export());
+$this->assertEquals('float', Type::import('float')->export());
+$this->assertEquals('bool', Type::import('bool')->export());
+$this->assertEquals('array', Type::import('array')->export());
+$this->assertEquals('object', Type::import('object')->export());
+$this->assertNull(Type::import('abc'));
+```
+
 ### isEmptyValue
 You dislike that PHP treats 0 / '0' as an empty value? Here is the solution:
 
 ```php
-$this->assertTrue(Type::isEmptyValue(''));
-$this->assertFalse(Type::isEmptyValue(' '));
-$this->assertFalse(Type::isEmptyValue('abc'));
-$this->assertFalse(Type::isEmptyValue('0'));
-$this->assertFalse(Type::isEmptyValue(0));
-$this->assertFalse(Type::isEmptyValue(false));
-$this->assertFalse(Type::isEmptyValue(true));
-$this->assertTrue(Type::isEmptyValue(null));
-$this->assertTrue(Type::isEmptyValue([]));
-$this->assertFalse(Type::isEmptyValue([1, 2, 3]));
+$this->assertTrue(Validator::verify('')->isEmptyValue());
+$this->assertFalse(Validator::verify(' ')->isEmptyValue());
+$this->assertFalse(Validator::verify('abc')->isEmptyValue());
+$this->assertFalse(Validator::verify('0')->isEmptyValue());
+$this->assertFalse(Validator::verify(0)->isEmptyValue());
+$this->assertFalse(Validator::verify(false)->isEmptyValue());
+$this->assertFalse(Validator::verify(true)->isEmptyValue());
+$this->assertTrue(Validator::verify(null)->isEmptyValue());
+$this->assertTrue(Validator::verify([])->isEmptyValue());
+$this->assertFalse(Validator::verify([1, 2, 3])->isEmptyValue());
 ```
 
 ### isValidValue
 Still want that false is _empty_? Try `isValidValue`
 
 ```php
-$this->assertFalse(Type::isValidValue(''));
-$this->assertTrue(Type::isValidValue(' '));
-$this->assertTrue(Type::isValidValue('abc'));
-$this->assertTrue(Type::isValidValue('0'));
-$this->assertTrue(Type::isValidValue(0));
-$this->assertFalse(Type::isValidValue(false));
-$this->assertTrue(Type::isValidValue(true));
-$this->assertFalse(Type::isValidValue(null));
-$this->assertFalse(Type::isValidValue([]));
-$this->assertTrue(Type::isValidValue([1, 2, 3]));
+$this->assertFalse(Validator::verify('')->isValidValue());
+$this->assertTrue(Validator::verify(' ')->isValidValue());
+$this->assertTrue(Validator::verify('abc')->isValidValue());
+$this->assertTrue(Validator::verify('0')->isValidValue());
+$this->assertTrue(Validator::verify(0)->isValidValue());
+$this->assertFalse(Validator::verify(false)->isValidValue());
+$this->assertTrue(Validator::verify(true)->isValidValue());
+$this->assertFalse(Validator::verify(null)->isValidValue());
+$this->assertFalse(Validator::verify([])->isValidValue());
+$this->assertTrue(Validator::verify([1, 2, 3])->isValidValue());
 ```
