@@ -172,6 +172,7 @@ class TypeTest extends TestCase
         $this->assertEquals(Type::IS_STRING, Type::alias('string'));
         $this->assertEquals(Type::IS_ARRAY, Type::alias('array'));
         $this->assertEquals(Type::IS_OBJECT, Type::alias('object'));
+        $this->assertEquals(Type::IS_NULL, Type::alias('null'));
         $this->assertEquals(Type::IS_NULL, Type::alias('abc'));
     }
 
