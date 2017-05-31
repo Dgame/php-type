@@ -21,6 +21,7 @@ final class Type
     const IS_OBJECT   = 1 << 6;
     const IS_CALLABLE = 1 << 7;
     const IS_NULL     = 1 << 8;
+    const NONE        = 1 << 9;
 
     const TYPE_CALLBACK = [
         self::IS_INT      => 'is_int',
@@ -349,6 +350,6 @@ final class Type
 
         $key = array_search($type, self::EXPORT);
 
-        return $key !== false ? $key : self::IS_NULL;
+        return $key !== false ? $key : self::NONE;
     }
 }

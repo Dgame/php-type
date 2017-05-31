@@ -173,7 +173,7 @@ class TypeTest extends TestCase
         $this->assertEquals(Type::IS_ARRAY, Type::alias('array'));
         $this->assertEquals(Type::IS_OBJECT, Type::alias('object'));
         $this->assertEquals(Type::IS_NULL, Type::alias('null'));
-        $this->assertEquals(Type::IS_NULL, Type::alias('abc'));
+        $this->assertEquals(Type::NONE, Type::alias('abc'));
     }
 
     public function testEmptyValue()
