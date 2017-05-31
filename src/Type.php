@@ -46,6 +46,14 @@ final class Type
         self::IS_NULL     => 'null'
     ];
 
+    const ALIAS = [
+        'double'  => self::IS_FLOAT,
+        'real'    => self::IS_FLOAT,
+        'integer' => self::IS_INT,
+        'long'    => self::IS_INT,
+        'boolean' => self::IS_BOOL
+    ];
+
     const COVARIANCE = [
         self::IS_INT     => [
             self::IS_FLOAT,
@@ -330,12 +338,17 @@ final class Type
     /**
      * @param string $type
      *
-     * @return Type|null
+     * @return int
      */
-    public static function import(string $type)
+    public static function alias(string $type): int
     {
+        $type = trim($type);
+        if (array_key_exists($type, self::ALIAS)) {
+            return self::ALIAS[$type];
+        }
+
         $key = array_search($type, self::EXPORT);
 
-        return $key !== false ? new self($key) : null;
+        return $key !== false ? $key : self::IS_NULL;
     }
 }
