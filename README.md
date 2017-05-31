@@ -123,15 +123,23 @@ $this->assertEquals('null', typeof(null)->export());
 $this->assertEquals('object', typeof(new Exception())->export());
 ```
 
-### import
-Import type by name
+### alias
+Get the internal alias of a type or `Type::IS_NULL`. Resolves even php-type-aliase, like `long`, `real`, `double` etc.
 ```php
-$this->assertEquals('int', Type::import('int')->export());
-$this->assertEquals('float', Type::import('float')->export());
-$this->assertEquals('bool', Type::import('bool')->export());
-$this->assertEquals('array', Type::import('array')->export());
-$this->assertEquals('object', Type::import('object')->export());
-$this->assertNull(Type::import('abc'));
+$this->assertEquals(Type::IS_INT, Type::alias('int'));
+$this->assertEquals(Type::IS_INT, Type::alias('integer'));
+$this->assertEquals(Type::IS_INT, Type::alias('long'));
+$this->assertEquals(Type::IS_NUMERIC, Type::alias('numeric'));
+$this->assertEquals(Type::IS_FLOAT, Type::alias('float'));
+$this->assertEquals(Type::IS_FLOAT, Type::alias('double'));
+$this->assertEquals(Type::IS_FLOAT, Type::alias('real'));
+$this->assertEquals(Type::IS_BOOL, Type::alias('bool'));
+$this->assertEquals(Type::IS_BOOL, Type::alias('boolean'));
+$this->assertEquals(Type::IS_STRING, Type::alias('string'));
+$this->assertEquals(Type::IS_ARRAY, Type::alias('array'));
+$this->assertEquals(Type::IS_OBJECT, Type::alias('object'));
+$this->assertEquals(Type::IS_NULL, Type::alias('null'));
+$this->assertEquals(Type::IS_NULL, Type::alias('abc'));
 ```
 
 ### isEmptyValue
