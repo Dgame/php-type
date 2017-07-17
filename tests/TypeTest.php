@@ -14,6 +14,8 @@ class TypeTest extends TestCase
         $this->assertTrue(typeof('')->isString());
         $this->assertTrue(typeof('a')->isString());
         $this->assertTrue(typeof('0')->isNumeric());
+        $this->assertTrue(typeof(false)->isBool());
+        $this->assertTrue(typeof(true)->isBool());
         $this->assertTrue(typeof([])->isArray());
         $this->assertTrue(typeof(new self())->isObject());
         $this->assertFalse(typeof(null)->isObject());
