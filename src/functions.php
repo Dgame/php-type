@@ -9,5 +9,5 @@ namespace Dgame\Type;
  */
 function typeof($expression): Type
 {
-    return Type::of($expression);
+    return TypeFactory::expression($expression);
 }

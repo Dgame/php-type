@@ -25,7 +25,7 @@ final class Validator
     public function __construct($expression)
     {
         $this->expression = $expression;
-        $this->type       = Type::of($expression)->getType();
+        $this->type       = TypeFactory::expression($expression)->getType();
     }
 
     /**

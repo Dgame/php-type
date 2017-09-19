@@ -1,6 +1,7 @@
 <?php
 
 use Dgame\Type\Type;
+use Dgame\Type\TypeFactory;
 use Dgame\Type\Validator;
 use PHPUnit\Framework\TestCase;
 use function Dgame\Type\typeof;
@@ -25,7 +26,7 @@ class TypeTest extends TestCase
         })->isCallable());
     }
 
-    public function testFrom()
+    public function testReflection()
     {
         $functions = [
             Type::IS_INT      => function (int $foo) {
@@ -46,7 +47,7 @@ class TypeTest extends TestCase
 
         foreach ($functions as $expected => $function) {
             $reflection = new ReflectionFunction($function);
-            $type       = Type::from($reflection->getParameters()[0]);
+            $type       = TypeFactory::reflection($reflection->getParameters()[0]);
 
             $this->assertEquals($expected, $type->getType());
 
@@ -61,7 +62,7 @@ class TypeTest extends TestCase
         $reflection = new ReflectionFunction(function ($mixed) {
         });
 
-        Type::from($reflection->getParameters()[0]);
+        TypeFactory::reflection($reflection->getParameters()[0]);
     }
 
     public function testEquals()
@@ -118,6 +119,7 @@ class TypeTest extends TestCase
         $this->assertTrue(typeof(0.0)->isImplicitSame(typeof(0)));
         $this->assertTrue(typeof(0)->isImplicitSame(typeof(0.0)));
         $this->assertTrue(typeof(0)->isImplicitSame(typeof('4')));
+        $this->assertTrue(typeof(0)->isImplicitSame(typeof('a')));
         $this->assertTrue(typeof('a')->isImplicitSame(typeof('b')));
         $this->assertFalse(typeof('a')->isImplicitSame(typeof(42)));
         $this->assertTrue(typeof('0')->isImplicitSame(typeof(42)));

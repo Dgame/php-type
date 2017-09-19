@@ -2,8 +2,6 @@
 
 namespace Dgame\Type;
 
-use Exception;
-use ReflectionParameter;
 use function Dgame\Ensurance\enforce;
 
 /**
@@ -114,46 +112,22 @@ final class Type
      *
      * @param int $type
      */
-    private function __construct(int $type)
+    public function __construct(int $type)
     {
         $this->type = $type;
     }
 
     /**
-     * @param $expression
+     * @param string $type
      *
      * @return Type
-     * @throws Exception
      */
-    public static function of($expression): self
+    public static function import(string $type): self
     {
-        foreach (self::TYPE_CALLBACK as $type => $callback) {
-            if ($callback($expression)) {
-                return new self($type);
-            }
-        }
+        $key = array_search($type, self::EXPORT, true);
+        enforce($key !== false)->orThrow('Could not import ' . $type);
 
-        throw new Exception('Unknown expression: ' . $expression);
-    }
-
-    /**
-     * @param ReflectionParameter $parameter
-     *
-     * @return Type
-     * @throws Exception
-     */
-    public static function from(ReflectionParameter $parameter): self
-    {
-        enforce($parameter->hasType())->orThrow('Parameter has no type');
-
-        if (!$parameter->getType()->isBuiltin()) {
-            return new self(self::IS_OBJECT);
-        }
-
-        $type = array_search((string) $parameter->getType(), self::EXPORT);
-        enforce($type !== false)->orThrow('No type found');
-
-        return new self($type);
+        return new self($key);
     }
 
     /**
@@ -219,7 +193,7 @@ final class Type
      */
     public function accept($expression): bool
     {
-        return self::of($expression)->isImplicit($this->type);
+        return TypeFactory::expression($expression)->isImplicit($this->type);
     }
 
     /**
@@ -229,7 +203,7 @@ final class Type
      */
     public function equals($expression): bool
     {
-        return $this->isSame(self::of($expression));
+        return $this->isSame(TypeFactory::expression($expression));
     }
 
     /**
