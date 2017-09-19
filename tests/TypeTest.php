@@ -175,7 +175,7 @@ class TypeTest extends TestCase
         $this->assertEquals('mixed', $type->export());
     }
 
-    public function testImport()
+    public function testAlias()
     {
         $this->assertEquals(Type::IS_INT, Type::alias('int'));
         $this->assertEquals(Type::IS_INT, Type::alias('integer'));
@@ -219,5 +219,12 @@ class TypeTest extends TestCase
         $this->assertFalse(Validator::verify(null)->isValidValue());
         $this->assertFalse(Validator::verify([])->isValidValue());
         $this->assertTrue(Validator::verify([1, 2, 3])->isValidValue());
+    }
+
+    public function testImport()
+    {
+        $this->assertTrue(Type::import('int')->isInt());
+        $this->assertTrue(Type::import('null')->isNull());
+        $this->assertTrue(Type::import('mixed')->isMixed());
     }
 }

@@ -316,6 +316,14 @@ final class Type
     /**
      * @return bool
      */
+    public function isMixed(): bool
+    {
+        return $this->is(self::IS_MIXED);
+    }
+
+    /**
+     * @return bool
+     */
     public function isCallable(): bool
     {
         return $this->is(self::IS_CALLABLE);
