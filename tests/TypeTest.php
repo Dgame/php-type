@@ -98,6 +98,8 @@ class TypeTest extends TestCase
         $this->assertTrue(typeof('0')->isBuiltin());
         $this->assertTrue(typeof([])->isBuiltin());
         $this->assertFalse(typeof(new self())->isBuiltin());
+        $type = new Type(Type::IS_MIXED);
+        $this->assertTrue($type->isBuiltIn());
     }
 
     public function testIsSame()
@@ -138,6 +140,13 @@ class TypeTest extends TestCase
         $this->assertTrue(typeof(true)->accept(3.14));
         $this->assertFalse(typeof(true)->accept(null));
         $this->assertFalse(typeof(true)->accept('abc'));
+
+        $type = new Type(Type::IS_MIXED);
+        $this->assertTrue($type->accept('abc'));
+        $this->assertTrue($type->accept('42'));
+        $this->assertTrue($type->accept(42));
+        $this->assertTrue($type->accept(3.14));
+        $this->assertTrue($type->accept(null));
     }
 
     public function testDefaultValue()
@@ -149,6 +158,8 @@ class TypeTest extends TestCase
         $this->assertEquals([], typeof([1, 2, 3])->getDefaultValue());
         $this->assertEquals(null, typeof(null)->getDefaultValue());
         $this->assertEquals(null, typeof(new self())->getDefaultValue());
+        $type = new Type(Type::IS_MIXED);
+        $this->assertEquals(null, $type->getDefaultValue());
     }
 
     public function testExport()
@@ -160,6 +171,8 @@ class TypeTest extends TestCase
         $this->assertEquals('array', typeof([1, 2, 3])->export());
         $this->assertEquals('null', typeof(null)->export());
         $this->assertEquals('object', typeof(new self())->export());
+        $type = new Type(Type::IS_MIXED);
+        $this->assertEquals('mixed', $type->export());
     }
 
     public function testImport()

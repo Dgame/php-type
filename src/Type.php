@@ -19,7 +19,8 @@ final class Type
     const IS_OBJECT   = 1 << 6;
     const IS_CALLABLE = 1 << 7;
     const IS_NULL     = 1 << 8;
-    const NONE        = 1 << 9;
+    const IS_MIXED    = 1 << 9;
+    const NONE        = 1 << 10;
 
     const TYPE_CALLBACK = [
         self::IS_INT      => 'is_int',
@@ -42,7 +43,8 @@ final class Type
         self::IS_ARRAY    => 'array',
         self::IS_OBJECT   => 'object',
         self::IS_CALLABLE => 'callable',
-        self::IS_NULL     => 'null'
+        self::IS_NULL     => 'null',
+        self::IS_MIXED    => 'mixed'
     ];
 
     const ALIAS = [
@@ -54,29 +56,60 @@ final class Type
     ];
 
     const COVARIANCE = [
-        self::IS_INT     => [
+        self::IS_INT      => [
             self::IS_FLOAT,
             self::IS_NUMERIC,
             self::IS_STRING,
-            self::IS_BOOL
+            self::IS_BOOL,
+            self::IS_MIXED
         ],
-        self::IS_FLOAT   => [
+        self::IS_FLOAT    => [
             self::IS_INT,
             self::IS_NUMERIC,
             self::IS_STRING,
-            self::IS_BOOL
+            self::IS_BOOL,
+            self::IS_MIXED
         ],
-        self::IS_BOOL    => [
+        self::IS_STRING   => [
+            self::IS_MIXED
+        ],
+        self::IS_BOOL     => [
             self::IS_INT,
             self::IS_NUMERIC,
             self::IS_FLOAT,
-            self::IS_STRING
+            self::IS_STRING,
+            self::IS_MIXED
         ],
-        self::IS_NUMERIC => [
+        self::IS_NUMERIC  => [
             self::IS_INT,
             self::IS_FLOAT,
             self::IS_BOOL,
-            self::IS_STRING
+            self::IS_STRING,
+            self::IS_MIXED
+        ],
+        self::IS_ARRAY    => [
+            self::IS_MIXED
+        ],
+        self::IS_OBJECT   => [
+            self::IS_MIXED
+        ],
+        self::IS_CALLABLE => [
+            self::IS_MIXED
+        ],
+        self::IS_NULL     => [
+            self::IS_MIXED
+        ],
+        self::IS_MIXED    => [
+            self::IS_INT,
+            self::IS_FLOAT,
+            self::IS_NUMERIC,
+            self::IS_STRING,
+            self::IS_BOOL,
+            self::IS_CALLABLE,
+            self::IS_OBJECT,
+            self::IS_ARRAY,
+            self::IS_NULL,
+            self::IS_MIXED
         ]
     ];
 
@@ -87,7 +120,8 @@ final class Type
         self::IS_STRING,
         self::IS_BOOL,
         self::IS_ARRAY,
-        self::IS_NULL
+        self::IS_NULL,
+        self::IS_MIXED
     ];
 
     const DEFAULT_VALUES = [
@@ -99,7 +133,8 @@ final class Type
         self::IS_ARRAY    => [],
         self::IS_OBJECT   => null,
         self::IS_CALLABLE => null,
-        self::IS_NULL     => null
+        self::IS_NULL     => null,
+        self::IS_MIXED    => null
     ];
 
     /**
