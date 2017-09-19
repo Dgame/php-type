@@ -5,6 +5,7 @@
 [![Build Status](https://scrutinizer-ci.com/g/Dgame/php-type/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Dgame/php-type/build-status/master)
 [![StyleCI](https://styleci.io/repos/68286580/shield?branch=master)](https://styleci.io/repos/68286580)
 [![Build Status](https://travis-ci.org/Dgame/php-type.svg?branch=master)](https://travis-ci.org/Dgame/php-type)
+[![Dependency Status](https://gemnasium.com/badges/github.com/Dgame/php-type.svg)](https://gemnasium.com/github.com/Dgame/php-type)
 
 Type comparisons on a whole new level.
 Get the type of a variable, prove that the type is builtin or compare it with another type.
