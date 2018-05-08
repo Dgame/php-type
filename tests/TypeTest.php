@@ -8,7 +8,7 @@ use function Dgame\Type\typeof;
 
 class TypeTest extends TestCase
 {
-    public function testTypeof()
+    public function testTypeof(): void
     {
         $this->assertTrue(typeof(0.0)->isFloat());
         $this->assertTrue(typeof(0)->isInt());
@@ -22,20 +22,20 @@ class TypeTest extends TestCase
         $this->assertFalse(typeof(null)->isObject());
         $this->assertTrue(typeof(null)->isNull());
         $this->assertTrue(typeof([self::class, 'testTypeof'])->isCallable());
-        $this->assertTrue(typeof(function () {
+        $this->assertTrue(typeof(function (): void {
         })->isCallable());
     }
 
-    public function testReflection()
+    public function testReflection(): void
     {
         $functions = [
-            Type::IS_INT      => function (int $foo) {
+            Type::IS_INT      => function (int $foo): void {
             },
-            Type::IS_ARRAY    => function (array $foo) {
+            Type::IS_ARRAY    => function (array $foo): void {
             },
-            Type::IS_CALLABLE => function (callable $foo) {
+            Type::IS_CALLABLE => function (callable $foo): void {
             },
-            Type::IS_OBJECT   => function (self $foo) {
+            Type::IS_OBJECT   => function (self $foo): void {
             }
         ];
         $values    = [
@@ -59,19 +59,19 @@ class TypeTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Parameter has no type');
 
-        $reflection = new ReflectionFunction(function ($mixed) {
+        $reflection = new ReflectionFunction(function ($mixed): void {
         });
 
         TypeFactory::reflection($reflection->getParameters()[0]);
     }
 
-    public function testEquals()
+    public function testEquals(): void
     {
         $this->assertTrue(typeof(new self())->equals(new self()));
         $this->assertTrue(typeof(null)->equals(null));
     }
 
-    public function testImplicit()
+    public function testImplicit(): void
     {
         $this->assertTrue(typeof(0.0)->isImplicit(Type::IS_INT));
         $this->assertTrue(typeof(0.0)->isImplicit(Type::IS_FLOAT));
@@ -89,7 +89,7 @@ class TypeTest extends TestCase
         $this->assertTrue(typeof(false)->isImplicit(Type::IS_STRING));
     }
 
-    public function testBuiltin()
+    public function testBuiltin(): void
     {
         $this->assertTrue(typeof(0)->isBuiltin());
         $this->assertTrue(typeof(0.0)->isBuiltin());
@@ -102,7 +102,7 @@ class TypeTest extends TestCase
         $this->assertTrue($type->isBuiltIn());
     }
 
-    public function testIsSame()
+    public function testIsSame(): void
     {
         $this->assertTrue(typeof(0.0)->isSame(typeof(3.14)));
         $this->assertFalse(typeof(0.0)->isSame(typeof(3)));
@@ -116,7 +116,7 @@ class TypeTest extends TestCase
         $this->assertFalse(typeof('0')->isSame(typeof(0)));
     }
 
-    public function testIsImplicitSame()
+    public function testIsImplicitSame(): void
     {
         $this->assertTrue(typeof(0.0)->isImplicitSame(typeof(0)));
         $this->assertTrue(typeof(0)->isImplicitSame(typeof(0.0)));
@@ -127,7 +127,7 @@ class TypeTest extends TestCase
         $this->assertTrue(typeof('0')->isImplicitSame(typeof(42)));
     }
 
-    public function testAccept()
+    public function testAccept(): void
     {
         $this->assertTrue(typeof(0)->accept('0'));
         $this->assertTrue(typeof(0)->accept(0));
@@ -149,7 +149,7 @@ class TypeTest extends TestCase
         $this->assertTrue($type->accept(null));
     }
 
-    public function testDefaultValue()
+    public function testDefaultValue(): void
     {
         $this->assertEquals(0, typeof(42)->getDefaultValue());
         $this->assertEquals(0.0, typeof(2.3)->getDefaultValue());
@@ -162,7 +162,7 @@ class TypeTest extends TestCase
         $this->assertEquals(null, $type->getDefaultValue());
     }
 
-    public function testExport()
+    public function testExport(): void
     {
         $this->assertEquals('int', typeof(42)->export());
         $this->assertEquals('float', typeof(2.3)->export());
@@ -175,7 +175,7 @@ class TypeTest extends TestCase
         $this->assertEquals('mixed', $type->export());
     }
 
-    public function testAlias()
+    public function testAlias(): void
     {
         $this->assertEquals(Type::IS_INT, Type::alias('int'));
         $this->assertEquals(Type::IS_INT, Type::alias('integer'));
@@ -193,7 +193,7 @@ class TypeTest extends TestCase
         $this->assertEquals(Type::NONE, Type::alias('abc'));
     }
 
-    public function testEmptyValue()
+    public function testEmptyValue(): void
     {
         $this->assertTrue(Validator::verify('')->isEmptyValue());
         $this->assertFalse(Validator::verify(' ')->isEmptyValue());
@@ -207,7 +207,7 @@ class TypeTest extends TestCase
         $this->assertFalse(Validator::verify([1, 2, 3])->isEmptyValue());
     }
 
-    public function testValidValue()
+    public function testValidValue(): void
     {
         $this->assertFalse(Validator::verify('')->isValidValue());
         $this->assertTrue(Validator::verify(' ')->isValidValue());
@@ -221,7 +221,7 @@ class TypeTest extends TestCase
         $this->assertTrue(Validator::verify([1, 2, 3])->isValidValue());
     }
 
-    public function testImport()
+    public function testImport(): void
     {
         $this->assertTrue(Type::import('int')->isInt());
         $this->assertTrue(Type::import('null')->isNull());
