@@ -4,7 +4,6 @@ namespace Dgame\Type;
 
 use Exception;
 use ReflectionParameter;
-use function Dgame\Ensurance\enforce;
 
 /**
  * Class TypeFactory
@@ -16,19 +15,24 @@ final class TypeFactory
      * @param ReflectionParameter $parameter
      *
      * @return Type
+     * @throws Exception
      */
     public static function reflection(ReflectionParameter $parameter): Type
     {
-        enforce($parameter->hasType())->orThrow('Parameter has no type');
+        if (!$parameter->hasType()) {
+            throw new Exception('Parameter has no type');
+        }
 
         if (!$parameter->getType()->isBuiltin()) {
             return new Type(Type::IS_OBJECT);
         }
 
-        $type = array_search((string) $parameter->getType(), Type::EXPORT);
-        enforce($type !== false)->orThrow('No type found');
+        $alias = Type::alias((string) $parameter->getType());
+        if ($alias === Type::NONE) {
+            throw new Exception('No type found');
+        }
 
-        return new Type($type);
+        return new Type($alias);
     }
 
     /**

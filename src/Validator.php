@@ -21,6 +21,8 @@ final class Validator
      * Validator constructor.
      *
      * @param $expression
+     *
+     * @throws \Exception
      */
     public function __construct($expression)
     {
@@ -32,6 +34,7 @@ final class Validator
      * @param $expression
      *
      * @return Validator
+     * @throws \Exception
      */
     public static function verify($expression): self
     {

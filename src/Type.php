@@ -156,13 +156,16 @@ final class Type
      * @param string $type
      *
      * @return Type
+     * @throws \Exception
      */
     public static function import(string $type): self
     {
-        $key = array_search($type, self::EXPORT, true);
-        enforce($key !== false)->orThrow('Could not import ' . $type);
+        $alias = self::alias($type);
+        if ($alias === self::NONE) {
+            throw new \Exception('Could not import ' . $type);
+        }
 
-        return new self($key);
+        return new self($alias);
     }
 
     /**
@@ -225,6 +228,7 @@ final class Type
      * @param $expression
      *
      * @return bool
+     * @throws \Exception
      */
     public function accept($expression): bool
     {
@@ -235,6 +239,7 @@ final class Type
      * @param $expression
      *
      * @return bool
+     * @throws \Exception
      */
     public function equals($expression): bool
     {
@@ -365,7 +370,7 @@ final class Type
             return self::ALIAS[$type];
         }
 
-        $key = array_search($type, self::EXPORT);
+        $key = array_search($type, self::EXPORT, true);
 
         return $key !== false ? $key : self::NONE;
     }
