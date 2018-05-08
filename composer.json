@@ -12,8 +12,8 @@
         }
     ],
     "require": {
-        "php": "^7.0",
-        "dgame/php-ensurance": "^0"
+        "php": "^7.1",
+        "dgame/php-ensurance": "^1"
     },
     "autoload": {
         "classmap": [
