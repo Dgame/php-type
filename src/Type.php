@@ -2,8 +2,6 @@
 
 namespace Dgame\Type;
 
-use function Dgame\Ensurance\enforce;
-
 /**
  * Class Type
  * @package Dgame\Type
