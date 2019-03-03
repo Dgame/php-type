@@ -2,6 +2,8 @@
 
 namespace Dgame\Type;
 
+use Exception;
+
 /**
  * Class Type
  * @package Dgame\Type
@@ -160,7 +162,7 @@ final class Type
     {
         $alias = self::alias($type);
         if ($alias === self::NONE) {
-            throw new \Exception('Could not import ' . $type);
+            throw new Exception('Could not import ' . $type);
         }
 
         return new self($alias);
@@ -223,7 +225,7 @@ final class Type
     }
 
     /**
-     * @param $expression
+     * @param mixed $expression
      *
      * @return bool
      * @throws \Exception
@@ -234,7 +236,7 @@ final class Type
     }
 
     /**
-     * @param $expression
+     * @param mixed $expression
      *
      * @return bool
      * @throws \Exception

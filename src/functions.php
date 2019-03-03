@@ -2,10 +2,13 @@
 
 namespace Dgame\Type;
 
+use Exception;
+
 /**
- * @param $expression
+ * @param mixed $expression
  *
  * @return Type
+ * @throws Exception
  */
 function typeof($expression): Type
 {

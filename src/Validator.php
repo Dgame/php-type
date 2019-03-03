@@ -20,7 +20,7 @@ final class Validator
     /**
      * Validator constructor.
      *
-     * @param $expression
+     * @param mixed $expression
      *
      * @throws \Exception
      */
@@ -31,7 +31,7 @@ final class Validator
     }
 
     /**
-     * @param $expression
+     * @param mixed $expression
      *
      * @return Validator
      * @throws \Exception

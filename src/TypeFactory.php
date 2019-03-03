@@ -36,7 +36,7 @@ final class TypeFactory
     }
 
     /**
-     * @param $expression
+     * @param mixed $expression
      *
      * @return Type
      * @throws Exception
@@ -44,7 +44,7 @@ final class TypeFactory
     public static function expression($expression): Type
     {
         foreach (Type::TYPE_CALLBACK as $type => $callback) {
-            if ($callback($expression)) {
+            if (is_callable($callback) && $callback($expression)) {
                 return new Type($type);
             }
         }
