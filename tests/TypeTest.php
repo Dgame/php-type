@@ -2,9 +2,9 @@
 
 use Dgame\Type\Type;
 use Dgame\Type\TypeFactory;
+use function Dgame\Type\typeof;
 use Dgame\Type\Validator;
 use PHPUnit\Framework\TestCase;
-use function Dgame\Type\typeof;
 
 class TypeTest extends TestCase
 {
