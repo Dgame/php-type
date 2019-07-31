@@ -4,6 +4,7 @@ namespace Dgame\Type;
 
 use Exception;
 use ReflectionParameter;
+use RuntimeException;
 
 /**
  * Class TypeFactory
@@ -20,16 +21,21 @@ final class TypeFactory
     public static function reflection(ReflectionParameter $parameter): Type
     {
         if (!$parameter->hasType()) {
-            throw new Exception('Parameter has no type');
+            throw new RuntimeException('Parameter has no type');
         }
 
-        if (!$parameter->getType()->isBuiltin()) {
+        $type = $parameter->getType();
+        if ($type === null) {
+            throw new RuntimeException('Parameter has no type');
+        }
+
+        if (!$type->isBuiltin()) {
             return new Type(Type::IS_OBJECT);
         }
 
-        $alias = Type::alias((string) $parameter->getType());
+        $alias = Type::alias((string) $type);
         if ($alias === Type::NONE) {
-            throw new Exception('No type found');
+            throw new RuntimeException('No type found');
         }
 
         return new Type($alias);
@@ -49,6 +55,6 @@ final class TypeFactory
             }
         }
 
-        throw new Exception('Unknown expression: ' . $expression);
+        throw new RuntimeException('Unknown expression: ' . $expression);
     }
 }
