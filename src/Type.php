@@ -87,7 +87,7 @@ abstract class Type
      */
     public static function fromName(string $typeName): self
     {
-        $basicType = preg_replace('/\[(.*?)\]$/S', '', trim($typeName)) ?? '';
+        $basicType = preg_replace('/\[.*?\]$/S', '', trim($typeName)) ?? '';
         switch (trim($basicType, '?')) {
             case 'callable':
                 $type = new CallableType();
@@ -99,6 +99,9 @@ abstract class Type
                 $type = new NullType();
                 break;
             case 'object':
+            case 'static':
+            case 'self':
+            case 'parent':
                 $type = new ObjectType();
                 break;
             case 'void':
@@ -131,7 +134,7 @@ abstract class Type
                 $type = new MixedType();
                 break;
             default:
-                $type = ArrayType::parseGeneric($typeName) ?? new UnknownType($typeName);
+                $type = ArrayType::parseGeneric($typeName) ?? new UnknownType($basicType);
                 break;
         }
 

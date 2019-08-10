@@ -262,5 +262,10 @@ class TypeParseTest extends TestCase
         $this->assertEquals('A', $type->getDescription());
         $this->assertEquals(new UnknownType('A'), $type);
         $this->assertEquals(null, $type->getDefaultValue());
+
+        $type = Type::parse('A[]');
+        $this->assertEquals('A[]', $type->getDescription());
+        $this->assertEquals(new ArrayType(new UnknownType('A')), $type);
+        $this->assertEquals([], $type->getDefaultValue());
     }
 }
