@@ -195,35 +195,16 @@ abstract class Type
     abstract public function getDescription(): string;
 
     /**
+     * @param TypeVisitorInterface $visitor
+     */
+    abstract public function accept(TypeVisitorInterface $visitor): void;
+
+    /**
      * @return ArrayType
      */
-    public function toArray(): ArrayType
+    final public function toArray(): ArrayType
     {
         return new ArrayType($this);
-    }
-
-    /**
-     * @return ArrayType|null
-     */
-    public function isArray(): ?ArrayType
-    {
-        return null;
-    }
-
-    /**
-     * @return ObjectType|null
-     */
-    public function isObject(): ?ObjectType
-    {
-        return null;
-    }
-
-    /**
-     * @return UnknownType|null
-     */
-    public function isUnknown(): ?UnknownType
-    {
-        return null;
     }
 
     /**

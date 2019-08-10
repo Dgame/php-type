@@ -19,6 +19,14 @@ final class MixedType extends Type
     }
 
     /**
+     * @param TypeVisitorInterface $visitor
+     */
+    public function accept(TypeVisitorInterface $visitor): void
+    {
+        $visitor->visitMixed($this);
+    }
+
+    /**
      * @return bool
      */
     public function isNullable(): bool

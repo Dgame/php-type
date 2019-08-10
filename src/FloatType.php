@@ -19,6 +19,14 @@ final class FloatType extends Type
     }
 
     /**
+     * @param TypeVisitorInterface $visitor
+     */
+    public function accept(TypeVisitorInterface $visitor): void
+    {
+        $visitor->visitFloat($this);
+    }
+
+    /**
      * @param mixed $value
      * @param bool  $strict
      *

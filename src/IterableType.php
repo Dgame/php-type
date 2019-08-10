@@ -19,6 +19,14 @@ final class IterableType extends Type
     }
 
     /**
+     * @param TypeVisitorInterface $visitor
+     */
+    public function accept(TypeVisitorInterface $visitor): void
+    {
+        $visitor->visitIterable($this);
+    }
+
+    /**
      * @param mixed $value
      * @param bool  $strict
      *

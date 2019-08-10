@@ -19,6 +19,14 @@ final class CallableType extends Type
     }
 
     /**
+     * @param TypeVisitorInterface $visitor
+     */
+    public function accept(TypeVisitorInterface $visitor): void
+    {
+        $visitor->visitCallable($this);
+    }
+
+    /**
      * @param mixed $value
      * @param bool  $strict
      *

@@ -26,19 +26,19 @@ final class UnknownType extends Type
     }
 
     /**
-     * @return UnknownType|null
-     */
-    public function isUnknown(): ?self
-    {
-        return $this;
-    }
-
-    /**
      * @return mixed|null
      */
     public function getDefaultValue()
     {
         return null;
+    }
+
+    /**
+     * @param TypeVisitorInterface $visitor
+     */
+    public function accept(TypeVisitorInterface $visitor): void
+    {
+        $visitor->visitUnknown($this);
     }
 
     /**

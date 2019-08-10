@@ -19,6 +19,14 @@ final class IntType extends Type
     }
 
     /**
+     * @param TypeVisitorInterface $visitor
+     */
+    public function accept(TypeVisitorInterface $visitor): void
+    {
+        $visitor->visitInt($this);
+    }
+
+    /**
      * @param mixed $value
      * @param bool  $strict
      *

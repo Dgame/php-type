@@ -19,6 +19,14 @@ final class NullType extends Type
     }
 
     /**
+     * @param TypeVisitorInterface $visitor
+     */
+    public function accept(TypeVisitorInterface $visitor): void
+    {
+        $visitor->visitNull($this);
+    }
+
+    /**
      * @param mixed $value
      * @param bool  $strict
      *

@@ -19,6 +19,14 @@ final class ResourceType extends Type
     }
 
     /**
+     * @param TypeVisitorInterface $visitor
+     */
+    public function accept(TypeVisitorInterface $visitor): void
+    {
+        $visitor->visitResource($this);
+    }
+
+    /**
      * @param mixed $value
      * @param bool  $strict
      *

@@ -86,11 +86,11 @@ final class ArrayType extends Type
     }
 
     /**
-     * @return ArrayType
+     * @param TypeVisitorInterface $visitor
      */
-    public function toArray(): self
+    public function accept(TypeVisitorInterface $visitor): void
     {
-        return $this;
+        $visitor->visitArray($this);
     }
 
     /**
@@ -132,8 +132,9 @@ final class ArrayType extends Type
         }
 
         if ($this->valueType !== null) {
-            $array = $this->valueType->isArray();
-            $desc  = $this->valueType->getDescription();
+            $resolver = new TypeResolver($this->valueType);
+            $array    = $resolver->getArrayType();
+            $desc     = $this->valueType->getDescription();
 
             return $array !== null && $array->hasIndexType() ? $desc : $desc . str_repeat('[]', $this->dimension);
         }
@@ -142,20 +143,17 @@ final class ArrayType extends Type
     }
 
     /**
-     * @return ArrayType|null
-     */
-    public function isArray(): ?self
-    {
-        return $this;
-    }
-
-    /**
      * @return Type
      */
     public function getBasicType(): Type
     {
         $type = $this->valueType;
-        while ($type !== null && ($array = $type->isArray()) !== null) {
+        while ($type !== null) {
+            $resolver = new TypeResolver($type);
+            $array    = $resolver->getArrayType();
+            if ($array === null) {
+                break;
+            }
             $type = $array->getValueType();
         }
 

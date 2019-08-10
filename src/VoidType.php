@@ -19,6 +19,14 @@ final class VoidType extends Type
     }
 
     /**
+     * @param TypeVisitorInterface $visitor
+     */
+    public function accept(TypeVisitorInterface $visitor): void
+    {
+        $visitor->visitVoid($this);
+    }
+
+    /**
      * @param mixed $value
      * @param bool  $strict
      *

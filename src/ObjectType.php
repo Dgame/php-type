@@ -19,11 +19,11 @@ final class ObjectType extends Type
     }
 
     /**
-     * @return ObjectType|null
+     * @param TypeVisitorInterface $visitor
      */
-    public function isObject(): ?self
+    public function accept(TypeVisitorInterface $visitor): void
     {
-        return $this;
+        $visitor->visitObject($this);
     }
 
     /**

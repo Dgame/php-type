@@ -19,6 +19,14 @@ final class StringType extends Type
     }
 
     /**
+     * @param TypeVisitorInterface $visitor
+     */
+    public function accept(TypeVisitorInterface $visitor): void
+    {
+        $visitor->visitString($this);
+    }
+
+    /**
      * @param mixed $value
      * @param bool  $strict
      *

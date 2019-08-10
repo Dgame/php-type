@@ -64,6 +64,14 @@ final class UnionType extends Type
     }
 
     /**
+     * @param TypeVisitorInterface $visitor
+     */
+    public function accept(TypeVisitorInterface $visitor): void
+    {
+        $visitor->visitUnion($this);
+    }
+
+    /**
      * @param mixed $value
      * @param bool  $strict
      *
