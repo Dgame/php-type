@@ -21,20 +21,17 @@ final class Validator
      * Validator constructor.
      *
      * @param mixed $expression
-     *
-     * @throws \Exception
      */
     public function __construct($expression)
     {
         $this->expression = $expression;
-        $this->type       = TypeFactory::expression($expression)->getType();
+        $this->type       = TypeOfFactory::expression($expression)->getType();
     }
 
     /**
      * @param mixed $expression
      *
      * @return Validator
-     * @throws \Exception
      */
     public static function verify($expression): self
     {
@@ -47,10 +44,10 @@ final class Validator
     public function isEmptyValue(): bool
     {
         switch ($this->type) {
-            case Type::IS_NULL:
+            case TypeOf::IS_NULL:
                 return true;
-            case Type::IS_STRING:
-            case Type::IS_ARRAY:
+            case TypeOf::IS_STRING:
+            case TypeOf::IS_ARRAY:
                 return empty($this->expression);
             default:
                 return false;

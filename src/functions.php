@@ -2,15 +2,12 @@
 
 namespace Dgame\Type;
 
-use Exception;
-
 /**
  * @param mixed $expression
  *
- * @return Type
- * @throws Exception
+ * @return TypeOf
  */
-function typeof($expression): Type
+function typeof($expression): TypeOf
 {
-    return TypeFactory::expression($expression);
+    return TypeOfFactory::expression($expression);
 }

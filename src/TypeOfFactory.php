@@ -1,24 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dgame\Type;
 
-use Exception;
 use ReflectionParameter;
 use RuntimeException;
 
 /**
- * Class TypeFactory
+ * Class TypeOfFactory
  * @package Dgame\Type
  */
-final class TypeFactory
+final class TypeOfFactory
 {
     /**
      * @param ReflectionParameter $parameter
      *
-     * @return Type
-     * @throws Exception
+     * @return TypeOf
      */
-    public static function reflection(ReflectionParameter $parameter): Type
+    public static function reflection(ReflectionParameter $parameter): TypeOf
     {
         if (!$parameter->hasType()) {
             throw new RuntimeException('Parameter has no type');
@@ -30,28 +30,27 @@ final class TypeFactory
         }
 
         if (!$type->isBuiltin()) {
-            return new Type(Type::IS_OBJECT);
+            return new TypeOf(TypeOf::IS_OBJECT);
         }
 
-        $alias = Type::alias((string) $type);
-        if ($alias === Type::NONE) {
+        $alias = TypeOf::alias((string) $type);
+        if ($alias === TypeOf::NONE) {
             throw new RuntimeException('No type found');
         }
 
-        return new Type($alias);
+        return new TypeOf($alias);
     }
 
     /**
      * @param mixed $expression
      *
-     * @return Type
-     * @throws Exception
+     * @return TypeOf
      */
-    public static function expression($expression): Type
+    public static function expression($expression): TypeOf
     {
-        foreach (Type::TYPE_CALLBACK as $type => $callback) {
+        foreach (TypeOf::TYPE_CALLBACK as $type => $callback) {
             if (is_callable($callback) && $callback($expression)) {
-                return new Type($type);
+                return new TypeOf($type);
             }
         }
 
