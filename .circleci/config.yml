@@ -4,8 +4,8 @@ orbs:
 jobs:
   build:
     branches:
-      only:
-        - new
+      ignore:
+        - master
     working_directory: /var/www/html
     docker:
       - image: circleci/php:7.2-cli-stretch
