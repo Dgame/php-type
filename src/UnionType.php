@@ -64,22 +64,6 @@ final class UnionType extends Type
     }
 
     /**
-     * @param Type $other
-     *
-     * @return bool
-     */
-    public function acceptType(Type $other): bool
-    {
-        foreach ($this->types as $type) {
-            if ($type->acceptType($other)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * @param mixed $value
      * @param bool  $strict
      *

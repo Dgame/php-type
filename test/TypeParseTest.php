@@ -46,13 +46,6 @@ class TypeParseTest extends TestCase
         $this->assertTrue($type->acceptValue(42, false));
     }
 
-    public function testStringAcceptType(): void
-    {
-        $type = new StringType();
-        $this->assertFalse($type->acceptType(new IntType()));
-        $this->assertTrue($type->acceptType(new StringType()));
-    }
-
     public function testParseIntArray(): void
     {
         $type = Type::parse('int[]');
@@ -79,22 +72,12 @@ class TypeParseTest extends TestCase
         $this->assertTrue($type->acceptValue(['1', '2'], false));
     }
 
-    public function testIntArrayAcceptType(): void
-    {
-        $type = new ArrayType(new IntType());
-        $this->assertTrue($type->acceptType(new IntType()));
-        $this->assertFalse($type->acceptType(new StringType()));
-    }
-
     public function testParseUnionType(): void
     {
         $type = Type::parse('int|string');
         $this->assertEquals('int|string', $type->getDescription());
         $this->assertInstanceOf(UnionType::class, $type);
         $this->assertEquals(new UnionType(new IntType(), new StringType()), $type);
-        $this->assertTrue($type->acceptType(new IntType()));
-        $this->assertTrue($type->acceptType(new StringType()));
-        $this->assertFalse($type->acceptType(new BoolType()));
         $this->assertEquals(0, $type->getDefaultValue());
 
         $type = new UnionType(new StringType(), new IntType());
@@ -108,8 +91,6 @@ class TypeParseTest extends TestCase
         $this->assertTrue($type->acceptValue('42', false));
         $this->assertTrue($type->acceptValue('42', true));
         $this->assertTrue($type->acceptValue(42, true));
-        $this->assertTrue($type->acceptType(new IntType()));
-        $this->assertTrue($type->acceptType(new StringType()));
     }
 
     public function testParseGenericIntArray(): void

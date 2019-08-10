@@ -94,40 +94,6 @@ final class ArrayType extends Type
     }
 
     /**
-     * @param Type $other
-     *
-     * @return bool
-     */
-    public function acceptType(Type $other): bool
-    {
-        $array     = $other->toArray();
-        $indexType = $array->getIndexType();
-        $valueType = $array->getValueType();
-
-        if ($this->dimension !== $array->getDimension()) {
-            return false;
-        }
-
-        if ($this->valueType !== null && $valueType === null) {
-            return false;
-        }
-
-        if ($this->valueType === null && $valueType !== null) {
-            return false;
-        }
-
-        if (!$this->getIndexType()->acceptType($indexType)) {
-            return false;
-        }
-
-        if ($this->valueType !== null && $valueType !== null && !$this->valueType->acceptType($valueType)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * @param mixed $value
      * @param bool  $strict
      *

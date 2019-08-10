@@ -177,16 +177,6 @@ abstract class Type
     }
 
     /**
-     * @param Type $type
-     *
-     * @return bool
-     */
-    public function acceptType(self $type): bool
-    {
-        return $type instanceof $this;
-    }
-
-    /**
      * @return mixed
      */
     abstract public function getDefaultValue();
