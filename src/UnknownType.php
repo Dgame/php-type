@@ -28,7 +28,7 @@ final class UnknownType extends Type
     /**
      * @return UnknownType|null
      */
-    public function isUnknown(): ?UnknownType
+    public function isUnknown(): ?self
     {
         return $this;
     }
