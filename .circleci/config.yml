@@ -3,6 +3,9 @@ orbs:
   codecov: codecov/codecov@1.0.2
 jobs:
   build:
+    branches:
+      only:
+        - new
     working_directory: /var/www/html
     docker:
       - image: circleci/php:7.2-cli-stretch
