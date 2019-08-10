@@ -98,7 +98,7 @@ final class ArrayType extends Type
     /**
      * @return ArrayType
      */
-    public function toArray(): ArrayType
+    public function toArray(): self
     {
         return $this;
     }
@@ -188,7 +188,7 @@ final class ArrayType extends Type
     /**
      * @return ArrayType|null
      */
-    public function isArray(): ?ArrayType
+    public function isArray(): ?self
     {
         return $this;
     }

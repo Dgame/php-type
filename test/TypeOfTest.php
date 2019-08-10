@@ -3,13 +3,13 @@
 namespace Dgame\Test\Type;
 
 use Dgame\Type\TypeOf;
+use function Dgame\Type\typeof;
 use Dgame\Type\TypeOfFactory;
+use Dgame\Type\Validator;
 use Exception;
+use PHPUnit\Framework\TestCase;
 use ReflectionException;
 use ReflectionFunction;
-use function Dgame\Type\typeof;
-use Dgame\Type\Validator;
-use PHPUnit\Framework\TestCase;
 
 class TypeOfTest extends TestCase
 {

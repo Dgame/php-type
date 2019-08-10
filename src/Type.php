@@ -64,7 +64,7 @@ abstract class Type
      *
      * @return Type
      */
-    public static function parse(string $typeName): Type
+    public static function parse(string $typeName): self
     {
         $union = new UnionType();
         foreach (explode('|', $typeName) as $type) {
@@ -149,7 +149,7 @@ abstract class Type
     {
         $offset = strlen($basicType);
         while (preg_match('/\s*\[\s*(?<index>\w*)\s*\]\s*/S', $typeName, $matches, 0, $offset) === 1) {
-            $offset    += strlen($matches[0]);
+            $offset += strlen($matches[0]);
             $indexType = !empty($matches['index']) ? self::parse($matches['index']) : null;
             $type      = new ArrayType($type, 1, $indexType);
         }

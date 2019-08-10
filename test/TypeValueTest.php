@@ -90,7 +90,7 @@ final class TypeValueTest extends TestCase
 
     public function testCallable(): void
     {
-        $fn = static function () {
+        $fn = static function (): void {
         };
 
         $type = Type::fromValue($fn);

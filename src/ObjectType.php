@@ -21,7 +21,7 @@ final class ObjectType extends Type
     /**
      * @return ObjectType|null
      */
-    public function isObject(): ?ObjectType
+    public function isObject(): ?self
     {
         return $this;
     }
