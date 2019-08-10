@@ -15,7 +15,7 @@ use Dgame\Type\ResourceType;
 use Dgame\Type\StringType;
 use Dgame\Type\Type;
 use Dgame\Type\UnionType;
-use Dgame\Type\UnknownType;
+use Dgame\Type\UserDefinedType;
 use Dgame\Type\VoidType;
 use PHPUnit\Framework\TestCase;
 
@@ -249,7 +249,7 @@ class TypeParseTest extends TestCase
     {
         $type = Type::parse('A');
         $this->assertEquals('A', $type->getDescription());
-        $this->assertEquals(new UnknownType('A'), $type);
+        $this->assertEquals(new UserDefinedType('A'), $type);
         $this->assertEquals(null, $type->getDefaultValue());
     }
 
@@ -257,7 +257,7 @@ class TypeParseTest extends TestCase
     {
         $type = Type::parse('A[]');
         $this->assertEquals('A[]', $type->getDescription());
-        $this->assertEquals(new ArrayType(new UnknownType('A')), $type);
+        $this->assertEquals(new ArrayType(new UserDefinedType('A')), $type);
         $this->assertEquals([], $type->getDefaultValue());
     }
 }

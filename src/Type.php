@@ -134,7 +134,7 @@ abstract class Type
                 $type = new MixedType();
                 break;
             default:
-                $type = ArrayType::parseGeneric($typeName) ?? new UnknownType($basicType);
+                $type = ArrayType::parseGeneric($typeName) ?? new UserDefinedType($basicType);
                 break;
         }
 

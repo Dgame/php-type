@@ -71,9 +71,9 @@ interface TypeVisitorInterface
     public function visitUnion(UnionType $type): void;
 
     /**
-     * @param UnknownType $type
+     * @param UserDefinedType $type
      */
-    public function visitUnknown(UnknownType $type): void;
+    public function visitUserDefined(UserDefinedType $type): void;
 
     /**
      * @param VoidType $type

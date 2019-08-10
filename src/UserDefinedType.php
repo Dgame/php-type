@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Dgame\Type;
 
 /**
- * Class UnknownType
+ * Class UserDefinedType
  * @package Dgame\Type
  */
-final class UnknownType extends Type
+final class UserDefinedType extends ObjectType
 {
     /**
      * @var string|null
@@ -26,30 +26,11 @@ final class UnknownType extends Type
     }
 
     /**
-     * @return mixed|null
-     */
-    public function getDefaultValue()
-    {
-        return null;
-    }
-
-    /**
      * @param TypeVisitorInterface $visitor
      */
     public function accept(TypeVisitorInterface $visitor): void
     {
-        $visitor->visitUnknown($this);
-    }
-
-    /**
-     * @param mixed $value
-     * @param bool  $strict
-     *
-     * @return bool
-     */
-    public function acceptValue($value, bool $strict): bool
-    {
-        return false;
+        $visitor->visitUserDefined($this);
     }
 
     /**
@@ -57,6 +38,6 @@ final class UnknownType extends Type
      */
     public function getDescription(): string
     {
-        return $this->typeName ?? '';
+        return $this->typeName ?? parent::getDescription();
     }
 }

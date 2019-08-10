@@ -59,9 +59,9 @@ final class TypeResolver implements TypeVisitorInterface
      */
     private $unionType;
     /**
-     * @var UnknownType|null
+     * @var UserDefinedType|null
      */
-    private $unknownType;
+    private $userDefinedType;
     /**
      * @var VoidType|null
      */
@@ -207,11 +207,11 @@ final class TypeResolver implements TypeVisitorInterface
     }
 
     /**
-     * @param UnknownType $type
+     * @param UserDefinedType $type
      */
-    public function visitUnknown(UnknownType $type): void
+    public function visitUserDefined(UserDefinedType $type): void
     {
-        $this->unknownType = $type;
+        $this->userDefinedType = $type;
         $this->appendNames($type);
     }
 
@@ -323,9 +323,9 @@ final class TypeResolver implements TypeVisitorInterface
     /**
      * @return bool
      */
-    public function isUnknownType(): bool
+    public function isUserDefinedType(): bool
     {
-        return $this->unknownType !== null;
+        return $this->userDefinedType !== null;
     }
 
     /**
@@ -433,11 +433,11 @@ final class TypeResolver implements TypeVisitorInterface
     }
 
     /**
-     * @return UnknownType|null
+     * @return UserDefinedType|null
      */
-    public function getUnknownType(): ?UnknownType
+    public function getUserDefinedType(): ?UserDefinedType
     {
-        return $this->unknownType;
+        return $this->userDefinedType;
     }
 
     /**

@@ -8,7 +8,7 @@ namespace Dgame\Type;
  * Class ObjectType
  * @package Dgame\Type
  */
-final class ObjectType extends Type
+class ObjectType extends Type
 {
     /**
      * @return mixed|null
