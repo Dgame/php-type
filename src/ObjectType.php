@@ -27,16 +27,6 @@ final class ObjectType extends Type
     }
 
     /**
-     * @param Type $type
-     *
-     * @return bool
-     */
-    public function isCastableTo(Type $type): bool
-    {
-        return $this->acceptType($type) || $type->isArray() !== null;
-    }
-
-    /**
      * @param mixed $value
      * @param bool  $strict
      *

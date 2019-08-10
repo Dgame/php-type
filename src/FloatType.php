@@ -19,16 +19,6 @@ final class FloatType extends Type
     }
 
     /**
-     * @param Type $type
-     *
-     * @return bool
-     */
-    public function isCastableTo(Type $type): bool
-    {
-        return $this->acceptValue($type->getDefaultValue(), false);
-    }
-
-    /**
      * @param mixed $value
      * @param bool  $strict
      *

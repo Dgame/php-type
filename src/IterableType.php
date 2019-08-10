@@ -19,16 +19,6 @@ final class IterableType extends Type
     }
 
     /**
-     * @param Type $type
-     *
-     * @return bool
-     */
-    public function isCastableTo(Type $type): bool
-    {
-        return $this->acceptType($type);
-    }
-
-    /**
      * @param mixed $value
      * @param bool  $strict
      *

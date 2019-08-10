@@ -187,13 +187,6 @@ abstract class Type
     }
 
     /**
-     * @param Type $type
-     *
-     * @return bool
-     */
-    abstract public function isCastableTo(self $type): bool;
-
-    /**
      * @return mixed
      */
     abstract public function getDefaultValue();
@@ -231,6 +224,14 @@ abstract class Type
      * @return ObjectType|null
      */
     public function isObject(): ?ObjectType
+    {
+        return null;
+    }
+
+    /**
+     * @return UnknownType|null
+     */
+    public function isUnknown(): ?UnknownType
     {
         return null;
     }

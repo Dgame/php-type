@@ -256,13 +256,24 @@ class TypeParseTest extends TestCase
         $this->assertEquals(null, $type->getDefaultValue());
     }
 
+    public function testParseMixedNull(): void
+    {
+        $type = Type::parse('mixed|null');
+        $this->assertEquals('mixed|null', $type->getDescription());
+        $this->assertEquals(new UnionType(new MixedType(), new NullType()), $type);
+        $this->assertEquals(null, $type->getDefaultValue());
+    }
+
     public function testParseUnknown(): void
     {
         $type = Type::parse('A');
         $this->assertEquals('A', $type->getDescription());
         $this->assertEquals(new UnknownType('A'), $type);
         $this->assertEquals(null, $type->getDefaultValue());
+    }
 
+    public function testParseArrayOfUnknownType(): void
+    {
         $type = Type::parse('A[]');
         $this->assertEquals('A[]', $type->getDescription());
         $this->assertEquals(new ArrayType(new UnknownType('A')), $type);

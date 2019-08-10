@@ -64,16 +64,6 @@ final class UnionType extends Type
     }
 
     /**
-     * @param Type $type
-     *
-     * @return bool
-     */
-    public function isCastableTo(Type $type): bool
-    {
-        return $this->acceptType($type);
-    }
-
-    /**
      * @param Type $other
      *
      * @return bool

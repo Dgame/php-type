@@ -19,16 +19,6 @@ final class ResourceType extends Type
     }
 
     /**
-     * @param Type $type
-     *
-     * @return bool
-     */
-    public function isCastableTo(Type $type): bool
-    {
-        return false;
-    }
-
-    /**
      * @param mixed $value
      * @param bool  $strict
      *

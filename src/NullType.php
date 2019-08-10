@@ -19,16 +19,6 @@ final class NullType extends Type
     }
 
     /**
-     * @param Type $type
-     *
-     * @return bool
-     */
-    public function isCastableTo(Type $type): bool
-    {
-        return true;
-    }
-
-    /**
      * @param mixed $value
      * @param bool  $strict
      *

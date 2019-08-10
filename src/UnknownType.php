@@ -26,13 +26,11 @@ final class UnknownType extends Type
     }
 
     /**
-     * @param Type $type
-     *
-     * @return bool
+     * @return UnknownType|null
      */
-    public function isCastableTo(Type $type): bool
+    public function isUnknown(): ?UnknownType
     {
-        return false;
+        return $this;
     }
 
     /**
