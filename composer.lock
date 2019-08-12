@@ -1018,16 +1018,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "2.2.8",
+            "version": "2.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "d1df8f3342a58c187d99d8f3aeb879a90f58ea9f"
+                "reference": "43a5fdf39ac6bbab115f2dd32193d3aa5f8c5f0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/d1df8f3342a58c187d99d8f3aeb879a90f58ea9f",
-                "reference": "d1df8f3342a58c187d99d8f3aeb879a90f58ea9f",
+                "url": "https://api.github.com/repos/phan/phan/zipball/43a5fdf39ac6bbab115f2dd32193d3aa5f8c5f0d",
+                "reference": "43a5fdf39ac6bbab115f2dd32193d3aa5f8c5f0d",
                 "shasum": ""
             },
             "require": {
@@ -1083,7 +1083,7 @@
                 "php",
                 "static"
             ],
-            "time": "2019-07-31T00:17:40+00:00"
+            "time": "2019-08-11T18:58:18+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -2236,16 +2236,16 @@
         },
         {
             "name": "sebastian/exporter",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "234199f4528de6d12aaa58b612e98f7d36adb937"
+                "reference": "06a9a5947f47b3029d76118eb5c22802e5869687"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/234199f4528de6d12aaa58b612e98f7d36adb937",
-                "reference": "234199f4528de6d12aaa58b612e98f7d36adb937",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/06a9a5947f47b3029d76118eb5c22802e5869687",
+                "reference": "06a9a5947f47b3029d76118eb5c22802e5869687",
                 "shasum": ""
             },
             "require": {
@@ -2273,6 +2273,10 @@
             ],
             "authors": [
                 {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                },
+                {
                     "name": "Jeff Welch",
                     "email": "whatthejeff@gmail.com"
                 },
@@ -2281,16 +2285,12 @@
                     "email": "github@wallbash.com"
                 },
                 {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@2bepublished.at"
-                },
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                },
-                {
                     "name": "Adam Harvey",
                     "email": "aharvey@php.net"
+                },
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
                 }
             ],
             "description": "Provides the functionality to export PHP variables for visualization",
@@ -2299,7 +2299,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2017-04-03T13:19:02+00:00"
+            "time": "2019-08-11T12:43:14+00:00"
         },
         {
             "name": "sebastian/global-state",

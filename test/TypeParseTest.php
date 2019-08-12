@@ -173,6 +173,45 @@ class TypeParseTest extends TestCase
         $this->assertEquals(new ArrayType(new StringType(), 1), $type->getValueType());
     }
 
+    public function testParseGenericArrayWithUnionType(): void
+    {
+        $type = Type::parse('array<string, array<string|int, mixed>>');
+        $this->assertEquals('array<string, array<string|int, mixed>>', $type->getDescription());
+        $this->assertEquals(
+            new ArrayType(
+                new ArrayType(
+                    new MixedType(),
+                    1,
+                    new UnionType(
+                        new StringType(),
+                        new IntType()
+                    )
+                ),
+                1,
+                new StringType()
+            ),
+            $type
+        );
+
+        $type = Type::parse('array<string, array<string, mixed|int>>');
+        $this->assertEquals('array<string, array<string, mixed|int>>', $type->getDescription());
+        $this->assertEquals(
+            new ArrayType(
+                new ArrayType(
+                    new UnionType(
+                        new MixedType(),
+                        new IntType()
+                    ),
+                    1,
+                    new StringType()
+                ),
+                1,
+                new StringType()
+            ),
+            $type
+        );
+    }
+
     public function testParseObject(): void
     {
         $type = Type::parse('object');

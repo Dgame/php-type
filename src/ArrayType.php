@@ -10,7 +10,7 @@ namespace Dgame\Type;
  */
 final class ArrayType extends Type
 {
-    private const GENERIC_ARRAY_PATTERN = '/^\s*array\s*<\s*(?<index>\w+)(?:\s*,\s*(?<value>.+?(?:\[\s*\w*\s*\])*))?\s*>\s*$/S';
+    private const GENERIC_ARRAY_PATTERN = '/^\s*array\s*<\s*(?<index>.+?)(?:\s*,\s*(?<value>.+?(?:\[\s*\w*\s*\])*))?\s*>\s*$/S';
 
     /**
      * @var Type|null
