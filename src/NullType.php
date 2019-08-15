@@ -34,7 +34,7 @@ final class NullType extends Type
      */
     public function acceptValue($value, bool $strict): bool
     {
-        return true;
+        return $strict ? $value === null : $value == null;
     }
 
     /**
