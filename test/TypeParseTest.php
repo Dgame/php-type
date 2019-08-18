@@ -14,6 +14,7 @@ use Dgame\Type\ObjectType;
 use Dgame\Type\ResourceType;
 use Dgame\Type\StringType;
 use Dgame\Type\Type;
+use Dgame\Type\TypeParser;
 use Dgame\Type\UnionType;
 use Dgame\Type\UserDefinedType;
 use Dgame\Type\VoidType;
@@ -23,12 +24,12 @@ class TypeParseTest extends TestCase
 {
     public function testParseBool(): void
     {
-        $type = Type::parse('bool');
+        $type = TypeParser::parse('bool');
         $this->assertEquals('bool', $type->getDescription());
         $this->assertInstanceOf(BoolType::class, $type);
         $this->assertEquals(false, $type->getDefaultValue());
 
-        $type = Type::parse('boolean');
+        $type = TypeParser::parse('boolean');
         $this->assertEquals('bool', $type->getDescription());
         $this->assertInstanceOf(BoolType::class, $type);
         $this->assertEquals(false, $type->getDefaultValue());
@@ -36,7 +37,7 @@ class TypeParseTest extends TestCase
 
     public function testParseString(): void
     {
-        $type = Type::parse('string');
+        $type = TypeParser::parse('string');
         $this->assertEquals('string', $type->getDescription());
         $this->assertInstanceOf(StringType::class, $type);
         $this->assertEquals('', $type->getDefaultValue());
@@ -44,7 +45,7 @@ class TypeParseTest extends TestCase
 
     public function testParseNullableString(): void
     {
-        $type = Type::parse('?string');
+        $type = TypeParser::parse('?string');
         $this->assertEquals('string|null', $type->getDescription());
         $this->assertInstanceOf(UnionType::class, $type);
         $this->assertEquals(null, $type->getDefaultValue());
@@ -52,7 +53,7 @@ class TypeParseTest extends TestCase
 
     public function testParseNullableInt(): void
     {
-        $type = Type::parse('?int');
+        $type = TypeParser::parse('?int');
         $this->assertEquals('int|null', $type->getDescription());
         $this->assertInstanceOf(UnionType::class, $type);
         $this->assertEquals(null, $type->getDefaultValue());
@@ -60,7 +61,7 @@ class TypeParseTest extends TestCase
 
     public function testParseCallable(): void
     {
-        $type = Type::parse('callable');
+        $type = TypeParser::parse('callable');
         $this->assertEquals('callable', $type->getDescription());
         $this->assertInstanceOf(CallableType::class, $type);
         $this->assertEquals(null, $type->getDefaultValue());
@@ -68,12 +69,12 @@ class TypeParseTest extends TestCase
 
     public function testParseArrayCallable(): void
     {
-        $type = Type::parse('callable[]');
+        $type = TypeParser::parse('callable[]');
         $this->assertEquals('callable[]', $type->getDescription());
         $this->assertInstanceOf(ArrayType::class, $type);
         $this->assertEquals([], $type->getDefaultValue());
 
-        $type = Type::parse('array<callable>');
+        $type = TypeParser::parse('array<callable>');
         $this->assertEquals('callable[]', $type->getDescription());
         $this->assertInstanceOf(ArrayType::class, $type);
         $this->assertEquals([], $type->getDefaultValue());
@@ -81,7 +82,7 @@ class TypeParseTest extends TestCase
 
     public function testParseMixed(): void
     {
-        $type = Type::parse('mixed');
+        $type = TypeParser::parse('mixed');
         $this->assertEquals('mixed', $type->getDescription());
         $this->assertInstanceOf(MixedType::class, $type);
         $this->assertEquals(null, $type->getDefaultValue());
