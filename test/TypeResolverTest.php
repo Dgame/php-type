@@ -8,6 +8,7 @@ use Dgame\Type\FloatType;
 use Dgame\Type\IntType;
 use Dgame\Type\MixedType;
 use Dgame\Type\NullType;
+use Dgame\Type\ObjectType;
 use Dgame\Type\StringType;
 use Dgame\Type\TypeResolver;
 use Dgame\Type\UnionType;
@@ -170,5 +171,26 @@ class TypeResolverTest extends TestCase
         $this->assertFalse($resolver->isIterableType());
         $this->assertNull($resolver->getIterableType());
         $this->assertEquals(['string', 'int'], $resolver->getNames());
+    }
+
+    public function testObjectType(): void
+    {
+        $type     = new ObjectType();
+        $resolver = new TypeResolver($type);
+        $this->assertFalse($resolver->isIntType());
+        $this->assertFalse($resolver->isArrayType());
+        $this->assertNull($resolver->getArrayType());
+        $this->assertNull($resolver->getIntType());
+        $this->assertFalse($resolver->isUnionType());
+        $this->assertNull($resolver->getUnionType());
+        $this->assertFalse($resolver->isCallableType());
+        $this->assertNull($resolver->getCallableType());
+        $this->assertFalse($resolver->isResourceType());
+        $this->assertNull($resolver->getResourceType());
+        $this->assertTrue($resolver->isObjectType());
+        $this->assertNotNull($resolver->getObjectType());
+        $this->assertFalse($resolver->isIterableType());
+        $this->assertNull($resolver->getIterableType());
+        $this->assertEquals('object', $resolver->getNames());
     }
 }

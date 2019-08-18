@@ -27,6 +27,11 @@ class TypeParseTest extends TestCase
         $this->assertEquals('bool', $type->getDescription());
         $this->assertInstanceOf(BoolType::class, $type);
         $this->assertEquals(false, $type->getDefaultValue());
+
+        $type = Type::parse('boolean');
+        $this->assertEquals('bool', $type->getDescription());
+        $this->assertInstanceOf(BoolType::class, $type);
+        $this->assertEquals(false, $type->getDefaultValue());
     }
 
     public function parseString(): void
@@ -35,6 +40,53 @@ class TypeParseTest extends TestCase
         $this->assertEquals('string', $type->getDescription());
         $this->assertInstanceOf(StringType::class, $type);
         $this->assertEquals('', $type->getDefaultValue());
+    }
+
+    public function parseCallable(): void
+    {
+        $type = Type::parse('callable[]');
+        $this->assertEquals('array<callable>', $type->getDescription());
+        $this->assertInstanceOf(CallableType::class, $type);
+        $this->assertEquals(null, $type->getDefaultValue());
+    }
+
+    public function parseMixed(): void
+    {
+        $type = Type::parse('mixed');
+        $this->assertEquals('mixed', $type->getDescription());
+        $this->assertInstanceOf(MixedType::class, $type);
+        $this->assertEquals(null, $type->getDefaultValue());
+    }
+
+    public function parseFloat(): void
+    {
+        $type = Type::parse('float');
+        $this->assertEquals('float', $type->getDescription());
+        $this->assertInstanceOf(FloatType::class, $type);
+        $this->assertEquals(0.0, $type->getDefaultValue());
+
+        $type = Type::parse('real');
+        $this->assertEquals('float', $type->getDescription());
+        $this->assertInstanceOf(FloatType::class, $type);
+        $this->assertEquals(0.0, $type->getDefaultValue());
+
+        $type = Type::parse('double');
+        $this->assertEquals('float', $type->getDescription());
+        $this->assertInstanceOf(FloatType::class, $type);
+        $this->assertEquals(0.0, $type->getDefaultValue());
+    }
+
+    public function parseInt(): void
+    {
+        $type = Type::parse('int');
+        $this->assertEquals('int', $type->getDescription());
+        $this->assertInstanceOf(IntType::class, $type);
+        $this->assertEquals(0, $type->getDefaultValue());
+
+        $type = Type::parse('integer');
+        $this->assertEquals('int', $type->getDescription());
+        $this->assertInstanceOf(IntType::class, $type);
+        $this->assertEquals(0, $type->getDefaultValue());
     }
 
     public function testParseIntArray(): void
