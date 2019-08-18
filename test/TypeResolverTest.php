@@ -191,6 +191,6 @@ class TypeResolverTest extends TestCase
         $this->assertNotNull($resolver->getObjectType());
         $this->assertFalse($resolver->isIterableType());
         $this->assertNull($resolver->getIterableType());
-        $this->assertEquals('object', $resolver->getNames());
+        $this->assertEquals(['object'], $resolver->getNames());
     }
 }

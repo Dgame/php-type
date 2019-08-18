@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 
 class TypeParseTest extends TestCase
 {
-    public function parseBool(): void
+    public function testParseBool(): void
     {
         $type = Type::parse('bool');
         $this->assertEquals('bool', $type->getDescription());
@@ -34,7 +34,7 @@ class TypeParseTest extends TestCase
         $this->assertEquals(false, $type->getDefaultValue());
     }
 
-    public function parseString(): void
+    public function testParseString(): void
     {
         $type = Type::parse('string');
         $this->assertEquals('string', $type->getDescription());
@@ -42,15 +42,28 @@ class TypeParseTest extends TestCase
         $this->assertEquals('', $type->getDefaultValue());
     }
 
-    public function parseCallable(): void
+    public function testParseCallable(): void
     {
-        $type = Type::parse('callable[]');
-        $this->assertEquals('array<callable>', $type->getDescription());
+        $type = Type::parse('callable');
+        $this->assertEquals('callable', $type->getDescription());
         $this->assertInstanceOf(CallableType::class, $type);
         $this->assertEquals(null, $type->getDefaultValue());
     }
 
-    public function parseMixed(): void
+    public function testParseArrayCallable(): void
+    {
+        $type = Type::parse('callable[]');
+        $this->assertEquals('callable[]', $type->getDescription());
+        $this->assertInstanceOf(ArrayType::class, $type);
+        $this->assertEquals([], $type->getDefaultValue());
+
+        $type = Type::parse('array<callable>');
+        $this->assertEquals('callable[]', $type->getDescription());
+        $this->assertInstanceOf(ArrayType::class, $type);
+        $this->assertEquals([], $type->getDefaultValue());
+    }
+
+    public function testParseMixed(): void
     {
         $type = Type::parse('mixed');
         $this->assertEquals('mixed', $type->getDescription());
@@ -58,7 +71,7 @@ class TypeParseTest extends TestCase
         $this->assertEquals(null, $type->getDefaultValue());
     }
 
-    public function parseFloat(): void
+    public function testParseFloat(): void
     {
         $type = Type::parse('float');
         $this->assertEquals('float', $type->getDescription());
@@ -76,7 +89,7 @@ class TypeParseTest extends TestCase
         $this->assertEquals(0.0, $type->getDefaultValue());
     }
 
-    public function parseInt(): void
+    public function testParseInt(): void
     {
         $type = Type::parse('int');
         $this->assertEquals('int', $type->getDescription());
@@ -87,6 +100,14 @@ class TypeParseTest extends TestCase
         $this->assertEquals('int', $type->getDescription());
         $this->assertInstanceOf(IntType::class, $type);
         $this->assertEquals(0, $type->getDefaultValue());
+    }
+
+    public function testParseResource(): void
+    {
+        $type = Type::parse('resource');
+        $this->assertEquals('resource', $type->getDescription());
+        $this->assertInstanceOf(ResourceType::class, $type);
+        $this->assertEquals(null, $type->getDefaultValue());
     }
 
     public function testParseIntArray(): void
@@ -242,22 +263,6 @@ class TypeParseTest extends TestCase
         $this->assertEquals(null, $type->getDefaultValue());
     }
 
-    public function testParseResource(): void
-    {
-        $type = Type::parse('resource');
-        $this->assertEquals('resource', $type->getDescription());
-        $this->assertEquals(new ResourceType(), $type);
-        $this->assertEquals(null, $type->getDefaultValue());
-    }
-
-    public function testParseFloat(): void
-    {
-        $type = Type::parse('float');
-        $this->assertEquals('float', $type->getDescription());
-        $this->assertEquals(new FloatType(), $type);
-        $this->assertEquals(0.0, $type->getDefaultValue());
-    }
-
     public function testParseVoid(): void
     {
         $type = Type::parse('void');
@@ -274,27 +279,11 @@ class TypeParseTest extends TestCase
         $this->assertEquals(null, $type->getDefaultValue());
     }
 
-    public function testParseCallable(): void
-    {
-        $type = Type::parse('callable');
-        $this->assertEquals('callable', $type->getDescription());
-        $this->assertEquals(new CallableType(), $type);
-        $this->assertEquals(null, $type->getDefaultValue());
-    }
-
     public function testParseNull(): void
     {
         $type = Type::parse('null');
         $this->assertEquals('null', $type->getDescription());
         $this->assertEquals(new NullType(), $type);
-        $this->assertEquals(null, $type->getDefaultValue());
-    }
-
-    public function testParseMixed(): void
-    {
-        $type = Type::parse('mixed');
-        $this->assertEquals('mixed', $type->getDescription());
-        $this->assertEquals(new MixedType(), $type);
         $this->assertEquals(null, $type->getDefaultValue());
     }
 
