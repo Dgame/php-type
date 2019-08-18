@@ -42,7 +42,7 @@ final class BasicTypeParser
     {
         if (strpos($this->typeName, '?') === 0) {
             $this->nullable = true;
-            $this->typeName = substr($this->typeName, 1);
+            $this->typeName = $this->basicType = substr($this->typeName, 1);
         }
     }
 
@@ -85,9 +85,12 @@ final class BasicTypeParser
      */
     public function getSuffix(): string
     {
-        return $this->suffix;
+        return $this->isNullable() ? $this->suffix . '|null' : $this->suffix;
     }
 
+    /**
+     *
+     */
     public function setSuffixBehindArray(): void
     {
         $index = strrpos($this->suffix, self::GENERIC_ARRAY_END);

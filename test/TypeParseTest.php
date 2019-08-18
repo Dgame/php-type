@@ -42,6 +42,22 @@ class TypeParseTest extends TestCase
         $this->assertEquals('', $type->getDefaultValue());
     }
 
+    public function testParseNullableString(): void
+    {
+        $type = Type::parse('?string');
+        $this->assertEquals('string|null', $type->getDescription());
+        $this->assertInstanceOf(UnionType::class, $type);
+        $this->assertEquals(null, $type->getDefaultValue());
+    }
+
+    public function testParseNullableInt(): void
+    {
+        $type = Type::parse('?int');
+        $this->assertEquals('int|null', $type->getDescription());
+        $this->assertInstanceOf(UnionType::class, $type);
+        $this->assertEquals(null, $type->getDefaultValue());
+    }
+
     public function testParseCallable(): void
     {
         $type = Type::parse('callable');

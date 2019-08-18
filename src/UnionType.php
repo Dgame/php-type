@@ -40,6 +40,14 @@ final class UnionType extends Type
     }
 
     /**
+     * @return bool
+     */
+    public function isSingleType(): bool
+    {
+        return count($this->types) === 1;
+    }
+
+    /**
      * @return Type
      */
     public function unwrap(): Type
@@ -48,7 +56,7 @@ final class UnionType extends Type
             return new VoidType();
         }
 
-        if (count($this->types) === 1) {
+        if ($this->isSingleType()) {
             return array_pop($this->types);
         }
 
