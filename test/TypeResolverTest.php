@@ -4,6 +4,7 @@ namespace Dgame\Test\Type;
 
 use Dgame\Type\ArrayType;
 use Dgame\Type\BoolType;
+use Dgame\Type\FloatType;
 use Dgame\Type\IntType;
 use Dgame\Type\MixedType;
 use Dgame\Type\NullType;
@@ -23,7 +24,36 @@ class TypeResolverTest extends TestCase
         $this->assertFalse($resolver->isArrayType());
         $this->assertNull($resolver->getArrayType());
         $this->assertNotNull($resolver->getIntType());
+        $this->assertFalse($resolver->isCallableType());
+        $this->assertNull($resolver->getCallableType());
+        $this->assertFalse($resolver->isResourceType());
+        $this->assertNull($resolver->getResourceType());
+        $this->assertFalse($resolver->isObjectType());
+        $this->assertNull($resolver->getObjectType());
+        $this->assertFalse($resolver->isIterableType());
+        $this->assertNull($resolver->getIterableType());
         $this->assertEquals(['int'], $resolver->getNames());
+    }
+
+    public function testFloatType(): void
+    {
+        $type     = new FloatType();
+        $resolver = new TypeResolver($type);
+        $this->assertTrue($resolver->isFloatType());
+        $this->assertNotNull($resolver->getFloatType());
+        $this->assertFalse($resolver->isIntType());
+        $this->assertFalse($resolver->isArrayType());
+        $this->assertNull($resolver->getArrayType());
+        $this->assertNull($resolver->getIntType());
+        $this->assertFalse($resolver->isCallableType());
+        $this->assertNull($resolver->getCallableType());
+        $this->assertFalse($resolver->isResourceType());
+        $this->assertNull($resolver->getResourceType());
+        $this->assertFalse($resolver->isObjectType());
+        $this->assertNull($resolver->getObjectType());
+        $this->assertFalse($resolver->isIterableType());
+        $this->assertNull($resolver->getIterableType());
+        $this->assertEquals(['float'], $resolver->getNames());
     }
 
     public function testBoolType(): void
@@ -34,6 +64,14 @@ class TypeResolverTest extends TestCase
         $this->assertFalse($resolver->isArrayType());
         $this->assertNull($resolver->getArrayType());
         $this->assertNotNull($resolver->getBoolType());
+        $this->assertFalse($resolver->isCallableType());
+        $this->assertNull($resolver->getCallableType());
+        $this->assertFalse($resolver->isResourceType());
+        $this->assertNull($resolver->getResourceType());
+        $this->assertFalse($resolver->isObjectType());
+        $this->assertNull($resolver->getObjectType());
+        $this->assertFalse($resolver->isIterableType());
+        $this->assertNull($resolver->getIterableType());
         $this->assertEquals(['bool'], $resolver->getNames());
     }
 
@@ -45,6 +83,14 @@ class TypeResolverTest extends TestCase
         $this->assertFalse($resolver->isArrayType());
         $this->assertNull($resolver->getArrayType());
         $this->assertNotNull($resolver->getNullType());
+        $this->assertFalse($resolver->isCallableType());
+        $this->assertNull($resolver->getCallableType());
+        $this->assertFalse($resolver->isResourceType());
+        $this->assertNull($resolver->getResourceType());
+        $this->assertFalse($resolver->isObjectType());
+        $this->assertNull($resolver->getObjectType());
+        $this->assertFalse($resolver->isIterableType());
+        $this->assertNull($resolver->getIterableType());
         $this->assertEquals(['null'], $resolver->getNames());
     }
 
@@ -56,6 +102,14 @@ class TypeResolverTest extends TestCase
         $this->assertFalse($resolver->isArrayType());
         $this->assertNull($resolver->getArrayType());
         $this->assertNotNull($resolver->getVoidType());
+        $this->assertFalse($resolver->isCallableType());
+        $this->assertNull($resolver->getCallableType());
+        $this->assertFalse($resolver->isResourceType());
+        $this->assertNull($resolver->getResourceType());
+        $this->assertFalse($resolver->isObjectType());
+        $this->assertNull($resolver->getObjectType());
+        $this->assertFalse($resolver->isIterableType());
+        $this->assertNull($resolver->getIterableType());
         $this->assertEquals(['void'], $resolver->getNames());
     }
 
@@ -67,6 +121,14 @@ class TypeResolverTest extends TestCase
         $this->assertFalse($resolver->isArrayType());
         $this->assertNull($resolver->getArrayType());
         $this->assertNotNull($resolver->getMixedType());
+        $this->assertFalse($resolver->isCallableType());
+        $this->assertNull($resolver->getCallableType());
+        $this->assertFalse($resolver->isResourceType());
+        $this->assertNull($resolver->getResourceType());
+        $this->assertFalse($resolver->isObjectType());
+        $this->assertNull($resolver->getObjectType());
+        $this->assertFalse($resolver->isIterableType());
+        $this->assertNull($resolver->getIterableType());
         $this->assertEquals(['mixed'], $resolver->getNames());
     }
 
@@ -78,6 +140,14 @@ class TypeResolverTest extends TestCase
         $this->assertTrue($resolver->isArrayType());
         $this->assertNotNull($resolver->getArrayType());
         $this->assertNull($resolver->getIntType());
+        $this->assertFalse($resolver->isCallableType());
+        $this->assertNull($resolver->getCallableType());
+        $this->assertFalse($resolver->isResourceType());
+        $this->assertNull($resolver->getResourceType());
+        $this->assertFalse($resolver->isObjectType());
+        $this->assertNull($resolver->getObjectType());
+        $this->assertFalse($resolver->isIterableType());
+        $this->assertNull($resolver->getIterableType());
         $this->assertEquals(['string[]'], $resolver->getNames());
     }
 
@@ -91,6 +161,14 @@ class TypeResolverTest extends TestCase
         $this->assertNull($resolver->getIntType());
         $this->assertTrue($resolver->isUnionType());
         $this->assertNotNull($resolver->getUnionType());
+        $this->assertFalse($resolver->isCallableType());
+        $this->assertNull($resolver->getCallableType());
+        $this->assertFalse($resolver->isResourceType());
+        $this->assertNull($resolver->getResourceType());
+        $this->assertFalse($resolver->isObjectType());
+        $this->assertNull($resolver->getObjectType());
+        $this->assertFalse($resolver->isIterableType());
+        $this->assertNull($resolver->getIterableType());
         $this->assertEquals(['string', 'int'], $resolver->getNames());
     }
 }
