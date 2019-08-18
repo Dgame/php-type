@@ -34,7 +34,7 @@ final class FloatType extends Type
      */
     public function acceptValue($value, bool $strict): bool
     {
-        return $strict ? is_float($value) : is_numeric($value);
+        return $strict ? (is_float($value) || is_int($value)) : is_numeric($value);
     }
 
     /**

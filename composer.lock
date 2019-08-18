@@ -352,19 +352,23 @@
         },
         {
             "name": "netresearch/jsonmapper",
-            "version": "v1.5.2",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cweiske/jsonmapper.git",
-                "reference": "caf41ab74ac7252f5f46db6c16ab0a8358e2e55c"
+                "reference": "0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cweiske/jsonmapper/zipball/caf41ab74ac7252f5f46db6c16ab0a8358e2e55c",
-                "reference": "caf41ab74ac7252f5f46db6c16ab0a8358e2e55c",
+                "url": "https://api.github.com/repos/cweiske/jsonmapper/zipball/0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06",
+                "reference": "0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
+                "ext-pcre": "*",
+                "ext-reflection": "*",
+                "ext-spl": "*",
                 "php": ">=5.6"
             },
             "require-dev": {
@@ -390,7 +394,7 @@
                 }
             ],
             "description": "Map nested JSON structures onto PHP classes",
-            "time": "2019-08-04T19:56:28+00:00"
+            "time": "2019-08-15T19:41:25+00:00"
         },
         {
             "name": "nette/bootstrap",
@@ -1018,16 +1022,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "2.2.10",
+            "version": "2.2.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "a19dc65091abb4c87374a998912fcc9ae7de41d0"
+                "reference": "ce6cb621d473df36e0d71d9f8c2b2e421135204f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/a19dc65091abb4c87374a998912fcc9ae7de41d0",
-                "reference": "a19dc65091abb4c87374a998912fcc9ae7de41d0",
+                "url": "https://api.github.com/repos/phan/phan/zipball/ce6cb621d473df36e0d71d9f8c2b2e421135204f",
+                "reference": "ce6cb621d473df36e0d71d9f8c2b2e421135204f",
                 "shasum": ""
             },
             "require": {
@@ -1083,7 +1087,7 @@
                 "php",
                 "static"
             ],
-            "time": "2019-08-12T23:40:39+00:00"
+            "time": "2019-08-18T19:08:45+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -1451,16 +1455,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.11.13",
+            "version": "0.11.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "493d12d4a98ba0d2a0b8e576d80e65c8e8068d08"
+                "reference": "b343bbf83d0dd08db917408d8efd99b140ce04c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/493d12d4a98ba0d2a0b8e576d80e65c8e8068d08",
-                "reference": "493d12d4a98ba0d2a0b8e576d80e65c8e8068d08",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b343bbf83d0dd08db917408d8efd99b140ce04c6",
+                "reference": "b343bbf83d0dd08db917408d8efd99b140ce04c6",
                 "shasum": ""
             },
             "require": {
@@ -1522,7 +1526,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2019-08-13T13:05:56+00:00"
+            "time": "2019-08-17T12:49:22+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

@@ -3,10 +3,14 @@
 namespace Dgame\Test\Type;
 
 use Dgame\Type\ArrayType;
+use Dgame\Type\BoolType;
 use Dgame\Type\IntType;
+use Dgame\Type\MixedType;
+use Dgame\Type\NullType;
 use Dgame\Type\StringType;
 use Dgame\Type\TypeResolver;
 use Dgame\Type\UnionType;
+use Dgame\Type\VoidType;
 use PHPUnit\Framework\TestCase;
 
 class TypeResolverTest extends TestCase
@@ -20,6 +24,50 @@ class TypeResolverTest extends TestCase
         $this->assertNull($resolver->getArrayType());
         $this->assertNotNull($resolver->getIntType());
         $this->assertEquals(['int'], $resolver->getNames());
+    }
+
+    public function testBoolType(): void
+    {
+        $type     = new BoolType();
+        $resolver = new TypeResolver($type);
+        $this->assertTrue($resolver->isBoolType());
+        $this->assertFalse($resolver->isArrayType());
+        $this->assertNull($resolver->getArrayType());
+        $this->assertNotNull($resolver->getBoolType());
+        $this->assertEquals(['bool'], $resolver->getNames());
+    }
+
+    public function testNullType(): void
+    {
+        $type     = new NullType();
+        $resolver = new TypeResolver($type);
+        $this->assertTrue($resolver->isNullType());
+        $this->assertFalse($resolver->isArrayType());
+        $this->assertNull($resolver->getArrayType());
+        $this->assertNotNull($resolver->getNullType());
+        $this->assertEquals(['null'], $resolver->getNames());
+    }
+
+    public function testVoidType(): void
+    {
+        $type     = new VoidType();
+        $resolver = new TypeResolver($type);
+        $this->assertTrue($resolver->isVoidType());
+        $this->assertFalse($resolver->isArrayType());
+        $this->assertNull($resolver->getArrayType());
+        $this->assertNotNull($resolver->getVoidType());
+        $this->assertEquals(['void'], $resolver->getNames());
+    }
+
+    public function testMixedType(): void
+    {
+        $type     = new MixedType();
+        $resolver = new TypeResolver($type);
+        $this->assertTrue($resolver->isMixedType());
+        $this->assertFalse($resolver->isArrayType());
+        $this->assertNull($resolver->getArrayType());
+        $this->assertNotNull($resolver->getMixedType());
+        $this->assertEquals(['mixed'], $resolver->getNames());
     }
 
     public function testArrayStringType(): void

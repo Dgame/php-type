@@ -33,10 +33,19 @@
         "phan/phan": "^2.2"
     },
     "scripts": {
-        "test": [
-            "phpunit",
-            "phpstan analyse src --level=7",
+        "unittest": [
+            "phpunit test --colors=always"
+        ],
+        "phpstan": [
+            "phpstan analyse src --level=7"
+        ],
+        "phan": [
             "phan"
+        ],
+        "test": [
+            "@unittest",
+            "@phpstan",
+            "@phan"
         ]
     }
 }
