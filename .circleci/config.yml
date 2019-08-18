@@ -49,6 +49,14 @@ jobs:
           command: |
             composer validate
             phpdbg -qrr vendor/bin/phpunit --coverage-clover=build/coverage.xml
+      - run:
+          name: Run PHP-Stan
+          command: |
+            composer phpstan
+      - run:
+          name: Run Phan
+          command: |
+            composer phan
       - store_artifacts:
           path: build/coverage.xml
       - codecov/upload:
