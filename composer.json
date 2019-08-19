@@ -12,7 +12,8 @@
         }
     ],
     "require": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "ext-json": "*"
     },
     "autoload": {
         "classmap": [
@@ -22,20 +23,29 @@
             "src/functions.php"
         ],
         "psr-4": {
-            "Dgame\\Type\\": "src/"
+            "Dgame\\Type\\": "src/",
+            "Dgame\\Test\\Type\\": "test/"
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "7.5",
-        "phpstan/phpstan": "^0.11.2"
+        "phpunit/phpunit": "^7.5",
+        "phpstan/phpstan": "^0.11.12",
+        "phan/phan": "^2.2"
     },
     "scripts": {
-        "test": [
-            "phpunit",
-            "phpstan analyse src --level=6"
+        "unittest": [
+            "phpunit test --colors=always"
         ],
-        "coverage": [
-            "phpunit --coverage-clover=coverage"
+        "phpstan": [
+            "phpstan analyse src --level=7"
+        ],
+        "phan": [
+            "phan"
+        ],
+        "test": [
+            "@unittest",
+            "@phpstan",
+            "@phan"
         ]
     }
 }
