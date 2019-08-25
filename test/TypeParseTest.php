@@ -295,6 +295,31 @@ class TypeParseTest extends TestCase
         ];
     }
 
+    /**
+     * @param string $typeName
+     *
+     * @param string $expectedType
+     *
+     * @dataProvider getObjectArrayTypes
+     */
+    public function testParseObjectArray(string $typeName, string $expectedType): void
+    {
+        $type = Type::parse($typeName);
+        $this->assertEquals($typeName, $type->getDescription());
+        $this->assertEquals(new ArrayType(new ObjectType($expectedType)), $type);
+        $this->assertEquals([], $type->getDefaultValue());
+    }
+
+    public function getObjectArrayTypes(): array
+    {
+        return [
+            ['object[]', 'object'],
+            ['self[]', 'self'],
+            ['static[]', 'static'],
+            ['parent[]', 'parent'],
+        ];
+    }
+
     public function testParseVoid(): void
     {
         $type = Type::parse('void');

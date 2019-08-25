@@ -61,8 +61,9 @@ final class TypeParser
      */
     public static function parse(string $typeName): Type
     {
-        $basicType = new BasicTypeParser($typeName);
-        switch ($basicType->getBasicType()) {
+        $basicType     = new BasicTypeParser($typeName);
+        $basicTypeName = $basicType->getBasicType();
+        switch ($basicTypeName) {
             case 'callable':
                 $type = new CallableType();
                 break;
@@ -76,7 +77,7 @@ final class TypeParser
             case 'static':
             case 'self':
             case 'parent':
-                $type = new ObjectType($basicType->getTypeName());
+                $type = new ObjectType($basicTypeName);
                 break;
             case 'void':
                 $type = new VoidType();
@@ -108,7 +109,7 @@ final class TypeParser
                 $type = new MixedType();
                 break;
             default:
-                $type = new UserDefinedType($basicType->getBasicType());
+                $type = new UserDefinedType($basicTypeName);
                 break;
         }
 
