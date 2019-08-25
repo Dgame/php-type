@@ -11,6 +11,21 @@ namespace Dgame\Type;
 class ObjectType extends Type
 {
     /**
+     * @var string|null
+     */
+    private $typeName;
+
+    /**
+     * ObjectType constructor.
+     *
+     * @param string|null $typeName
+     */
+    public function __construct(string $typeName = null)
+    {
+        $this->typeName = $typeName;
+    }
+
+    /**
      * @return mixed|null
      */
     public function getDefaultValue()
@@ -42,6 +57,6 @@ class ObjectType extends Type
      */
     public function getDescription(): string
     {
-        return 'object';
+        return $this->typeName ?? 'object';
     }
 }

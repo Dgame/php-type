@@ -122,7 +122,7 @@ final class TypeValueTest extends TestCase
         $type = Type::fromValue(new stdClass());
         $this->assertEquals('object', $type->getDescription());
         $this->assertEquals(null, $type->getDefaultValue());
-        $this->assertEquals(new ObjectType(), $type);
+        $this->assertEquals(new ObjectType('object'), $type);
     }
 
     public function testResource(): void

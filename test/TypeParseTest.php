@@ -272,12 +272,27 @@ class TypeParseTest extends TestCase
         );
     }
 
-    public function testParseObject(): void
+    /**
+     * @dataProvider getObjectTypes
+     *
+     * @param string $typeName
+     */
+    public function testParseObject(string $typeName): void
     {
-        $type = Type::parse('object');
-        $this->assertEquals('object', $type->getDescription());
-        $this->assertEquals(new ObjectType(), $type);
+        $type = Type::parse($typeName);
+        $this->assertEquals($typeName, $type->getDescription());
+        $this->assertEquals(new ObjectType($typeName), $type);
         $this->assertEquals(null, $type->getDefaultValue());
+    }
+
+    public function getObjectTypes(): array
+    {
+        return [
+            ['object'],
+            ['self'],
+            ['static'],
+            ['parent'],
+        ];
     }
 
     public function testParseVoid(): void

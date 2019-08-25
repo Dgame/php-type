@@ -76,7 +76,7 @@ final class TypeParser
             case 'static':
             case 'self':
             case 'parent':
-                $type = new ObjectType();
+                $type = new ObjectType($basicType->getTypeName());
                 break;
             case 'void':
                 $type = new VoidType();
