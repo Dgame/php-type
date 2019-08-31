@@ -99,7 +99,6 @@ final class TypeParser
                 $type = new IntType();
                 break;
             case 'resource':
-            case 'resource (closed)':
                 $type = new ResourceType();
                 break;
             case 'string':

@@ -137,7 +137,19 @@ class TypeParseTest extends TestCase
         $this->assertEquals(new IntType(), $type->getBasicType());
         $this->assertEquals(new IntType(), $type->getValueType());
         $this->assertEquals(new IntType(), $type->getIndexType());
-        $this->assertEquals(1, $type->getDimension());
+        $this->assertEquals([], $type->getDefaultValue());
+    }
+
+    public function testParseMultiDimensionArray(): void
+    {
+        $type = Type::parse('string[][][]');
+        $this->assertEquals('string[][][]', $type->getDescription());
+        $this->assertInstanceOf(ArrayType::class, $type);
+        $this->assertEquals(new ArrayType(new ArrayType(new ArrayType(new StringType()))), $type);
+        /** @var ArrayType $type */
+        $this->assertEquals(new StringType(), $type->getBasicType());
+        $this->assertEquals(new ArrayType(new ArrayType(new StringType())), $type->getValueType());
+        $this->assertEquals(new IntType(), $type->getIndexType());
         $this->assertEquals([], $type->getDefaultValue());
     }
 
@@ -163,7 +175,6 @@ class TypeParseTest extends TestCase
         $this->assertEquals(new IntType(), $type->getBasicType());
         $this->assertEquals(new IntType(), $type->getValueType());
         $this->assertEquals(new IntType(), $type->getIndexType());
-        $this->assertEquals(1, $type->getDimension());
         $this->assertEquals([], $type->getDefaultValue());
     }
 
@@ -172,7 +183,7 @@ class TypeParseTest extends TestCase
         $type = Type::parse('array<int, string>');
         $this->assertEquals('array<int, string>', $type->getDescription());
         $this->assertInstanceOf(ArrayType::class, $type);
-        $this->assertEquals(new ArrayType(new StringType(), 1, new IntType()), $type);
+        $this->assertEquals(new ArrayType(new StringType(), new IntType()), $type);
         /** @var ArrayType $type */
         $this->assertEquals(new StringType(), $type->getBasicType());
         $this->assertEquals(new StringType(), $type->getValueType());
@@ -183,7 +194,7 @@ class TypeParseTest extends TestCase
         $type = Type::parse('array<int, array<string>>');
         $this->assertEquals('array<int, string[]>', $type->getDescription());
         $this->assertInstanceOf(ArrayType::class, $type);
-        $this->assertEquals(new ArrayType(new ArrayType(new StringType()), 1, new IntType()), $type);
+        $this->assertEquals(new ArrayType(new ArrayType(new StringType()), new IntType()), $type);
         /** @var ArrayType $type */
         $this->assertEquals(new StringType(), $type->getBasicType());
         $this->assertEquals(new ArrayType(new StringType()), $type->getValueType());
@@ -194,7 +205,7 @@ class TypeParseTest extends TestCase
         $type = Type::parse('string[int]');
         $this->assertEquals('array<int, string>', $type->getDescription());
         $this->assertInstanceOf(ArrayType::class, $type);
-        $this->assertEquals(new ArrayType(new StringType(), 1, new IntType()), $type);
+        $this->assertEquals(new ArrayType(new StringType(), new IntType()), $type);
         /** @var ArrayType $type */
         $this->assertEquals(new StringType(), $type->getBasicType());
         $this->assertEquals(new StringType(), $type->getValueType());
@@ -205,7 +216,7 @@ class TypeParseTest extends TestCase
         $type = Type::parse('int[string]');
         $this->assertEquals('array<string, int>', $type->getDescription());
         $this->assertInstanceOf(ArrayType::class, $type);
-        $this->assertEquals(new ArrayType(new IntType(), 1, new StringType()), $type);
+        $this->assertEquals(new ArrayType(new IntType(), new StringType()), $type);
         /** @var ArrayType $type */
         $this->assertEquals(new IntType(), $type->getBasicType());
         $this->assertEquals(new IntType(), $type->getValueType());
@@ -216,10 +227,10 @@ class TypeParseTest extends TestCase
         $type = Type::parse('array<string, string[int]>');
         $this->assertEquals('array<string, array<int, string>>', $type->getDescription());
         $this->assertInstanceOf(ArrayType::class, $type);
-        $this->assertEquals(new ArrayType(new ArrayType(new StringType(), 1, new IntType()), 1, new StringType()), $type);
+        $this->assertEquals(new ArrayType(new ArrayType(new StringType(), new IntType()), new StringType()), $type);
         /** @var ArrayType $type */
         $this->assertEquals(new StringType(), $type->getBasicType());
-        $this->assertEquals(new ArrayType(new StringType(), 1, new IntType()), $type->getValueType());
+        $this->assertEquals(new ArrayType(new StringType(), new IntType()), $type->getValueType());
     }
 
     public function testParseGenericStringNestedStringArrayWithAlternateSyntax(): void
@@ -227,10 +238,10 @@ class TypeParseTest extends TestCase
         $type = Type::parse('array<int, string[]>');
         $this->assertEquals('array<int, string[]>', $type->getDescription());
         $this->assertInstanceOf(ArrayType::class, $type);
-        $this->assertEquals(new ArrayType(new ArrayType(new StringType()), 1, new IntType()), $type);
+        $this->assertEquals(new ArrayType(new ArrayType(new StringType()), new IntType()), $type);
         /** @var ArrayType $type */
         $this->assertEquals(new StringType(), $type->getBasicType());
-        $this->assertEquals(new ArrayType(new StringType(), 1), $type->getValueType());
+        $this->assertEquals(new ArrayType(new StringType()), $type->getValueType());
     }
 
     public function testParseGenericArrayWithUnionType(): void
@@ -240,15 +251,11 @@ class TypeParseTest extends TestCase
         $this->assertEquals(
             new ArrayType(
                 new ArrayType(
-                    new MixedType(),
-                    1,
-                    new UnionType(
-                        new StringType(),
-                        new IntType()
-                    )
-                ),
-                1,
-                new StringType()
+                    new MixedType(), new UnionType(
+                                       new StringType(),
+                                       new IntType()
+                                   )
+                ), new StringType()
             ),
             $type
         );
@@ -261,12 +268,8 @@ class TypeParseTest extends TestCase
                     new UnionType(
                         new MixedType(),
                         new IntType()
-                    ),
-                    1,
-                    new StringType()
-                ),
-                1,
-                new StringType()
+                    ), new StringType()
+                ), new StringType()
             ),
             $type
         );

@@ -17,10 +17,6 @@ final class ArrayType extends Type
      */
     private $valueType;
     /**
-     * @var int
-     */
-    private $dimension;
-    /**
      * @var Type|null
      */
     private $indexType;
@@ -29,13 +25,11 @@ final class ArrayType extends Type
      * ArrayType constructor.
      *
      * @param Type|null $valueType
-     * @param int       $dimension
      * @param Type|null $indexType
      */
-    public function __construct(Type $valueType = null, int $dimension = 1, Type $indexType = null)
+    public function __construct(Type $valueType = null, Type $indexType = null)
     {
         $this->valueType = $valueType;
-        $this->dimension = $dimension;
         $this->indexType = $indexType;
     }
 
@@ -69,7 +63,6 @@ final class ArrayType extends Type
 
             return new self(
                 self::parseGeneric($valueType) ?? Type::parse($valueType),
-                1,
                 is_string($indexType) ? Type::parse($indexType) : null
             );
         }
@@ -127,16 +120,12 @@ final class ArrayType extends Type
      */
     public function getDescription(): string
     {
-        if ($this->valueType !== null && $this->indexType !== null) {
-            return sprintf('array<%s, %s>', $this->indexType->getDescription(), $this->valueType->getDescription());
-        }
-
         if ($this->valueType !== null) {
-            $resolver = new TypeResolver($this->valueType);
-            $array    = $resolver->getArrayType();
-            $desc     = $this->valueType->getDescription();
+            if ($this->indexType !== null) {
+                return sprintf('array<%s, %s>', $this->indexType->getDescription(), $this->valueType->getDescription());
+            }
 
-            return $array !== null && $array->hasIndexType() ? $desc : $desc . str_repeat('[]', $this->dimension);
+            return sprintf('%s[]', $this->valueType->getDescription());
         }
 
         return 'array';
@@ -174,13 +163,5 @@ final class ArrayType extends Type
     public function getValueType(): ?Type
     {
         return $this->valueType;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDimension(): int
-    {
-        return $this->dimension;
     }
 }

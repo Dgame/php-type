@@ -24,7 +24,7 @@ final class ArrayBuilder
         while (preg_match(self::ARRAY_INDEX_PATTERN, $suffix, $matches, 0, $offset) === 1) {
             $offset += strlen($matches[0]);
             $indexType = !empty($matches['index']) ? Type::parse($matches['index']) : null;
-            $type      = new ArrayType($type, 1, $indexType);
+            $type      = new ArrayType($type, $indexType);
         }
 
         return $type;
