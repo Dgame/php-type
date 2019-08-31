@@ -10,8 +10,8 @@ namespace Dgame\Type;
  */
 final class BasicTypeParser
 {
-    private const NON_ALPHA_PATTERN = '/[\W]+/';
-    private const GENERIC_ARRAY_END = '>';
+    private const NON_ALLOWED_CLASS_NAME_SYMBOL = '/[^a-zA-Z0-9_\\\]/';
+    private const GENERIC_ARRAY_END             = '>';
 
     /**
      * @var string
@@ -48,7 +48,7 @@ final class BasicTypeParser
 
     private function parseBasicType(): void
     {
-        if (preg_match(self::NON_ALPHA_PATTERN, $this->typeName, $match, PREG_OFFSET_CAPTURE) === 1) {
+        if (preg_match(self::NON_ALLOWED_CLASS_NAME_SYMBOL, $this->typeName, $match, PREG_OFFSET_CAPTURE) === 1) {
             $index = $match[0][1];
 
             $this->basicType = substr($this->typeName, 0, $index);

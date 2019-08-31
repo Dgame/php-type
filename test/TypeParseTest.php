@@ -370,4 +370,20 @@ class TypeParseTest extends TestCase
         $this->assertEquals(new ArrayType(new UserDefinedType('A')), $type);
         $this->assertEquals([], $type->getDefaultValue());
     }
+
+    public function testParseFullQualifiedUserDefinedType(): void
+    {
+        $type = Type::parse(static::class);
+        $this->assertEquals(static::class, $type->getDescription());
+        $this->assertEquals(new UserDefinedType(static::class), $type);
+        $this->assertEquals(null, $type->getDefaultValue());
+    }
+
+    public function testParseUserDefinedTypeWithUnderscore(): void
+    {
+        $type = Type::parse('A_B');
+        $this->assertEquals('A_B', $type->getDescription());
+        $this->assertEquals(new UserDefinedType('A_B'), $type);
+        $this->assertEquals(null, $type->getDefaultValue());
+    }
 }
