@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
+use Dgame\Type\Tokenizer\Token;
+use Dgame\Type\Tokenizer\Tokenizer;
+use Dgame\Type\Tokenizer\TokenStream;
+use RuntimeException;
+
 /**
  * Class TypeParser
  * @package Dgame\Type
@@ -51,7 +56,12 @@ final class TypeParser
      */
     private static function interpretValue($value)
     {
-        return json_decode($value, true);
+        $value = json_decode($value, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new RuntimeException(json_last_error_msg());
+        }
+
+        return $value;
     }
 
     /**
@@ -61,9 +71,56 @@ final class TypeParser
      */
     public static function parse(string $typeName): Type
     {
-        $basicType     = new BasicTypeParser($typeName);
-        $basicTypeName = $basicType->getBasicType();
-        switch ($basicTypeName) {
+        $tokenizer = new Tokenizer($typeName);
+        $stream    = $tokenizer->getTokenStream();
+
+        $type = self::parseStream($stream);
+        //        var_dump($stream->getNextToken());
+        //        var_dump($type);
+        //        exit;
+
+        $stream->expectOneOf(Token::EOF);
+
+        return $type;
+    }
+
+    /**
+     * @param TokenStream $stream
+     *
+     * @return Type
+     */
+    public static function parseStream(TokenStream $stream): Type
+    {
+        $type = self::parseType($stream);
+        $type = self::parseGeneric($stream, $type);
+        $type = self::parseBrackets($stream, $type);
+        $type = self::parseUnion($stream, $type);
+
+        return $type;
+    }
+
+    /**
+     * @param TokenStream $stream
+     *
+     * @return Type
+     */
+    public static function parseType(TokenStream $stream): Type
+    {
+        $nullable = $stream->mayOneOf(Token::NULLABLE);
+        $type     = self::parseBasicType($stream);
+
+        return $nullable === null ? $type : $type->asNullable();
+    }
+
+    /**
+     * @param TokenStream $stream
+     *
+     * @return Type
+     */
+    public static function parseBasicType(TokenStream $stream): Type
+    {
+        $token = $stream->expectOneOf(Token::BUILTIN_TYPE, Token::IDENTIFIER);
+        switch ($token->getValue()) {
             case 'callable':
                 $type = new CallableType();
                 break;
@@ -77,13 +134,13 @@ final class TypeParser
             case 'static':
             case 'self':
             case 'parent':
-                $type = new ObjectType($basicTypeName);
+                $type = new ObjectType($token->getValue());
                 break;
             case 'void':
                 $type = new VoidType();
                 break;
             case 'array':
-                $type = self::parseArray($typeName, $basicType);
+                $type = new ArrayType();
                 break;
             case 'bool':
             case 'boolean':
@@ -108,31 +165,83 @@ final class TypeParser
                 $type = new MixedType();
                 break;
             default:
-                $type = new UserDefinedType($basicTypeName);
+                $type = new UserDefinedType($token->getValue());
                 break;
         }
 
-        $type->setIsNullable($basicType->isNullable());
-        $suffix = $basicType->getSuffix();
-
-        return ArrayBuilder::build($suffix, UnionBuilder::build($suffix, $type));
+        return $type;
     }
 
     /**
-     * @param string          $typeName
-     * @param BasicTypeParser $basicType
+     * @param TokenStream $stream
+     * @param Type        $type
      *
-     * @return ArrayType
+     * @return Type
      */
-    private static function parseArray(string $typeName, BasicTypeParser $basicType): ArrayType
+    public static function parseGeneric(TokenStream $stream, Type $type): Type
     {
-        $type = ArrayType::parseGeneric($typeName);
-        if ($type !== null) {
-            $basicType->setSuffixBehindArray();
+        $peek = $stream->peekNextToken();
+        if ($peek->isOpenAngleBracket()) {
+            $stream->skipNextToken();
 
-            return $type;
+            $genericTypes = [];
+            do {
+                $genericTypes[] = self::parseStream($stream);
+            } while ($stream->mayOneOf(TOKEN::COMMA) !== null);
+
+            $stream->expectOneOf(Token::CLOSE_ANGLE_BRACKET);
+
+            $resolver = new TypeResolver($type);
+            if ($resolver->isArrayType() && count($genericTypes) <= 2) {
+                $valueType = array_pop($genericTypes);
+                $indexType = array_pop($genericTypes);
+
+                return new ArrayType($valueType, $indexType);
+            }
+
+            return new GenericType($type, ...$genericTypes);
         }
 
-        return new ArrayType();
+        return $type;
+    }
+
+    /**
+     * @param TokenStream $stream
+     * @param Type        $type
+     *
+     * @return Type
+     */
+    public static function parseBrackets(TokenStream $stream, Type $type): Type
+    {
+        while ($stream->mayOneOf(Token::OPEN_SQUARE_BRACKET) !== null) {
+            $indexType = null;
+
+            $token = $stream->mayOneOf(Token::BUILTIN_TYPE, Token::IDENTIFIER);
+            if ($token !== null) {
+                $indexType = self::parse($token->getValue());
+            }
+            $stream->expectOneOf(Token::CLOSE_SQUARE_BRACKET);
+
+            $type = new ArrayType($type, $indexType);
+        }
+
+        return $type;
+    }
+
+    /**
+     * @param TokenStream $stream
+     * @param Type        $type
+     *
+     * @return Type
+     */
+    public static function parseUnion(TokenStream $stream, Type $type): Type
+    {
+        $type = new UnionType($type);
+        while ($stream->mayOneOf(Token::UNION) !== null) {
+            $token = $stream->expectOneOf(Token::BUILTIN_TYPE, Token::IDENTIFIER);
+            $type->appendType(self::parse($token->getValue()));
+        }
+
+        return $type->unwrap();
     }
 }

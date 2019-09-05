@@ -10,8 +10,6 @@ namespace Dgame\Type;
  */
 final class ArrayType extends Type
 {
-    private const GENERIC_ARRAY_PATTERN = '/^\s*array\s*<\s*(?<index>.+?)(?:\s*,\s*(?<value>.+?(?:\[\s*\w*\s*\])*))?\s*>\s*$/S';
-
     /**
      * @var Type|null
      */
@@ -47,27 +45,6 @@ final class ArrayType extends Type
     public function hasValueType(): bool
     {
         return $this->valueType !== null;
-    }
-
-    /**
-     * @param string $typeName
-     *
-     * @return ArrayType|null
-     */
-    public static function parseGeneric(string $typeName): ?self
-    {
-        if (preg_match(self::GENERIC_ARRAY_PATTERN, $typeName, $matches) === 1) {
-            $hasIndexType = !empty($matches['value']);
-            $indexType    = $hasIndexType ? $matches['index'] : null;
-            $valueType    = $hasIndexType ? $matches['value'] : $matches['index'];
-
-            return new self(
-                self::parseGeneric($valueType) ?? Type::parse($valueType),
-                is_string($indexType) ? Type::parse($indexType) : null
-            );
-        }
-
-        return null;
     }
 
     /**

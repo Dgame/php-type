@@ -32,10 +32,6 @@ final class UnionType extends Type
      */
     public function appendType(Type $type): void
     {
-        if ($type->isNullable()) {
-            $this->setIsNullable(true);
-        }
-
         $this->types[$type->getDescription()] = $type;
     }
 
@@ -101,8 +97,16 @@ final class UnionType extends Type
      */
     public function getDescription(): string
     {
-        return implode('|', array_map(static function (Type $type): string {
-            return $type->getDescription();
-        }, $this->types));
+        return implode('|', array_keys($this->types));
+    }
+
+    /**
+     * @return UnionType
+     */
+    public function asNullable(): UnionType
+    {
+        $this->appendType(new NullType());
+
+        return $this;
     }
 }

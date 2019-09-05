@@ -11,11 +11,6 @@ namespace Dgame\Type;
 abstract class Type
 {
     /**
-     * @var bool
-     */
-    private $nullable = false;
-
-    /**
      * @param mixed $value
      *
      * @return Type
@@ -33,22 +28,6 @@ abstract class Type
     public static function parse(string $typeName): self
     {
         return TypeParser::parse($typeName);
-    }
-
-    /**
-     * @param bool $nullable
-     */
-    public function setIsNullable(bool $nullable): void
-    {
-        $this->nullable = $nullable;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNullable(): bool
-    {
-        return $this->nullable;
     }
 
     /**
@@ -83,9 +62,17 @@ abstract class Type
     }
 
     /**
+     * @return UnionType
+     */
+    public function asNullable(): UnionType
+    {
+        return new UnionType($this, new NullType());
+    }
+
+    /**
      * @return string
      */
-    public function __toString(): string
+    final public function __toString(): string
     {
         return $this->getDescription();
     }
