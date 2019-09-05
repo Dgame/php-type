@@ -65,6 +65,6 @@ final class GenericType extends Type
      */
     public function accept(TypeVisitorInterface $visitor): void
     {
-        // TODO: Implement accept() method.
+        $visitor->visitGeneric($this);
     }
 }
