@@ -276,6 +276,40 @@ class TypeParseTest extends TestCase
     }
 
     /**
+     * @param string $typeName
+     *
+     * @param string $expected
+     *
+     * @dataProvider getAlternateArrayIndex
+     */
+    public function testAlternateArrayIndex(string $typeName, string $expected): void
+    {
+        $type = Type::parse($typeName);
+        $this->assertEquals($expected, $type->getDescription());
+    }
+
+    /**
+     * @return array
+     */
+    public function getAlternateArrayIndex(): array
+    {
+        return [
+            ['int[][string][]', 'array<string, int[]>[]'],
+            ['array<string, int[]>[]', 'array<string, int[]>[]'],
+            ['int[][string]', 'array<string, int[]>'],
+            ['array<string, int[]>', 'array<string, int[]>'],
+            ['int[string][]', 'array<string, int>[]'],
+            ['array<string, int>[]', 'array<string, int>[]'],
+            ['int[string][][]', 'array<string, int>[][]'],
+            ['array<string, int>[][]', 'array<string, int>[][]'],
+            ['int[string][bool][int]', 'array<int, array<bool, array<string, int>>>'],
+            ['array<int, array<bool, array<string, int>>>', 'array<int, array<bool, array<string, int>>>'],
+            ['int[string][][int]', 'array<int, array<string, int>[]>'],
+            ['array<int, array<string, int>[]>', 'array<int, array<string, int>[]>'],
+        ];
+    }
+
+    /**
      * @dataProvider getObjectTypes
      *
      * @param string $typeName
