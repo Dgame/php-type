@@ -118,54 +118,39 @@ final class TypeParser
         $token = $stream->expectOneOf(Token::BUILTIN_TYPE, Token::IDENTIFIER);
         switch ($token->getValue()) {
             case 'callable':
-                $type = new CallableType();
-                break;
+                return new CallableType();
             case 'iterable':
-                $type = new IterableType();
-                break;
+                return new IterableType();
             case 'null':
-                $type = new NullType();
-                break;
+                return new NullType();
             case 'object':
             case 'static':
             case 'self':
             case 'parent':
-                $type = new ObjectType($token->getValue());
-                break;
+                return new ObjectType($token->getValue());
             case 'void':
-                $type = new VoidType();
-                break;
+                return new VoidType();
             case 'array':
-                $type = new ArrayType();
-                break;
+                return new ArrayType();
             case 'bool':
             case 'boolean':
-                $type = new BoolType();
-                break;
+                return new BoolType();
             case 'float':
             case 'double':
             case 'real':
-                $type = new FloatType();
-                break;
+                return new FloatType();
             case 'int':
             case 'integer':
-                $type = new IntType();
-                break;
+                return new IntType();
             case 'resource':
-                $type = new ResourceType();
-                break;
+                return new ResourceType();
             case 'string':
-                $type = new StringType();
-                break;
+                return new StringType();
             case 'mixed':
-                $type = new MixedType();
-                break;
+                return new MixedType();
             default:
-                $type = new UserDefinedType($token->getValue());
-                break;
+                return new UserDefinedType($token->getValue());
         }
-
-        return $type;
     }
 
     /**
