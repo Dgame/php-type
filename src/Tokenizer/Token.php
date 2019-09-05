@@ -56,7 +56,7 @@ final class Token
         self::DOUBLE_ARROW         => '=>',
         self::EQUAL                => '=',
         self::COLON                => ':',
-        self::IDENTIFIER           => '(\\\?[_a-zA-Z]+\w*)+',
+        self::IDENTIFIER           => '(?:\\\?[_a-zA-Z]+\w*)+',
     ];
 
     /**
