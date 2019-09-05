@@ -127,7 +127,7 @@ final class TypeValueTest extends TestCase
 
     public function testResource(): void
     {
-        $f    = fopen(__DIR__ . '/TypeParseTest.php', 'r');
+        $f    = fopen(__DIR__ . '/TypeParseTest.php', 'rb');
         $type = Type::fromValue($f);
         fclose($f);
         $this->assertEquals('resource', $type->getDescription());

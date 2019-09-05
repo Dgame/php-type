@@ -11,6 +11,11 @@ namespace Dgame\Type;
 interface TypeVisitorInterface
 {
     /**
+     * @param GenericType $type
+     */
+    public function visitGeneric(GenericType $type): void;
+
+    /**
      * @param ArrayType $type
      */
     public function visitArray(ArrayType $type): void;

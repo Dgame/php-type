@@ -11,6 +11,10 @@ namespace Dgame\Type;
 final class TypeResolver implements TypeVisitorInterface
 {
     /**
+     * @var GenericType|null
+     */
+    private $genericType;
+    /**
      * @var ArrayType|null
      */
     private $arrayType;
@@ -96,6 +100,15 @@ final class TypeResolver implements TypeVisitorInterface
     public function getNames(): array
     {
         return $this->names;
+    }
+
+    /**
+     * @param GenericType $type
+     */
+    public function visitGeneric(GenericType $type): void
+    {
+        $this->genericType = $type;
+        $this->appendNames($type);
     }
 
     /**
@@ -222,6 +235,14 @@ final class TypeResolver implements TypeVisitorInterface
     {
         $this->voidType = $type;
         $this->appendNames($type);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGenericType(): bool
+    {
+        return $this->genericType !== null;
     }
 
     /**
