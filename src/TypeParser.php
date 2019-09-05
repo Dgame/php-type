@@ -73,11 +73,7 @@ final class TypeParser
     {
         $tokenizer = new Tokenizer($typeName);
         $stream    = $tokenizer->getTokenStream();
-
-        $type = self::parseStream($stream);
-        //        var_dump($stream->getNextToken());
-        //        var_dump($type);
-        //        exit;
+        $type      = self::parseStream($stream);
 
         $stream->expectOneOf(Token::EOF);
 
