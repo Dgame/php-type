@@ -341,6 +341,6 @@ final class Token
      */
     public static function eof(): self
     {
-        return new Token(0, '');
+        return new self(0, '');
     }
 }

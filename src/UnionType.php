@@ -103,7 +103,7 @@ final class UnionType extends Type
     /**
      * @return UnionType
      */
-    public function asNullable(): UnionType
+    public function asNullable(): self
     {
         $this->appendType(new NullType());
 
