@@ -37,8 +37,8 @@ final class TypeParser
     public static function fromValue($value): Type
     {
         /**
-         * @var callable  $callback
-         * @var  string[] $types
+         * @var callable    $callback
+         * @var string|null $type
          */
         foreach (self::TYPE_CALLBACKS as $callback => $type) {
             if ($callback($value)) {
