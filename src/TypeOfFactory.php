@@ -29,10 +29,6 @@ final class TypeOfFactory
             throw new RuntimeException('Parameter has no type');
         }
 
-        if (version_compare(PHP_VERSION, '8.0.0') < 0 && !$type->isBuiltin()) {
-            return new TypeOf(TypeOf::IS_OBJECT);
-        }
-
         $alias = TypeOf::alias((string) $type);
         if ($alias === TypeOf::NONE) {
             throw new RuntimeException('No type found');
