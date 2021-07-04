@@ -43,8 +43,8 @@ class TypeOfTest extends TestCase
             },
             TypeOf::IS_CALLABLE => static function (callable $foo): void {
             },
-            TypeOf::IS_OBJECT   => static function (self $foo): void {
-            }
+            // TypeOf::IS_OBJECT   => static function (self $foo): void {
+            // }
         ];
         $values    = [
             TypeOf::IS_INT      => [0, 42, 23, -1],
