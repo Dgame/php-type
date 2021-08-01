@@ -6,7 +6,6 @@ namespace Dgame\Type\Tests;
 
 use Dgame\Type\ArrayType;
 use Dgame\Type\BoolType;
-use Dgame\Type\CallableType;
 use Dgame\Type\FloatType;
 use Dgame\Type\IntType;
 use Dgame\Type\NullType;
@@ -44,6 +43,6 @@ final class FromValueTest extends TestCase
         yield '[true, false]' => [[true, false], new ArrayType(new BoolType(), new IntType())];
         yield '["foo" => true, "bar" => false]' => [['foo' => true, 'bar' => false], new ArrayType(new BoolType(), new StringType())];
         yield 'null' => [null, new NullType()];
-        yield 'Closure' => [static fn() => null, new ObjectType('Closure')];
+        yield 'Closure' => [static fn () => null, new ObjectType('Closure')];
     }
 }
