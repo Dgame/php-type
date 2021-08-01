@@ -6,9 +6,9 @@ namespace Dgame\Type;
 
 use BadMethodCallException;
 
-final class UnionType extends Type
+final class IntersectionType extends Type
 {
-    /** @var Type[]  */
+    /** @var Type[] */
     private array $types = [];
 
     public function __construct(Type $type1, Type $type2, Type ...$types)
@@ -19,29 +19,18 @@ final class UnionType extends Type
     public function isAssignable(Type $other): bool
     {
         foreach ($this->types as $type) {
-            if ($type->isAssignable($other)) {
-                return true;
+            if (!$type->isAssignable($other)) {
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     public function hasDefaultValue(): bool
     {
         foreach ($this->types as $type) {
             if ($type instanceof Defaultable) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function allowsNull(): bool
-    {
-        foreach ($this->types as $type) {
-            if ($type instanceof NullType) {
                 return true;
             }
         }
@@ -82,6 +71,6 @@ final class UnionType extends Type
             $output[] = (string) $type;
         }
 
-        return implode('|', $output);
+        return implode('&', $output);
     }
 }

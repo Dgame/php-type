@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
-final class BoolType extends ScalarType implements Defaultable, Castable
+final class FalseType extends Type implements Defaultable
 {
     public function isAssignable(Type $other): bool
     {
-        return $other instanceof $this || $other instanceof FalseType;
-    }
-
-    public function cast(mixed $value): bool
-    {
-        return (bool) $value;
+        return $other instanceof $this || $other instanceof BoolType;
     }
 
     public function getDefaultValue(): bool
@@ -28,6 +23,6 @@ final class BoolType extends ScalarType implements Defaultable, Castable
 
     public function __toString(): string
     {
-        return 'bool';
+        return 'false';
     }
 }

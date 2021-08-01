@@ -4,43 +4,30 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
-/**
- * Class IterableType
- * @package Dgame\Type
- */
+use ReflectionClass;
+
 final class IterableType extends Type
 {
-    /**
-     * @return mixed|null
-     */
-    public function getDefaultValue()
+    public function isAssignable(Type $other): bool
     {
-        return null;
+        if ($other instanceof $this) {
+            return true;
+        }
+
+        if ($other instanceof ObjectType) {
+            /** @phpstan-ignore-next-line */
+            return (new ReflectionClass($other->getFullQualifiedName()))->isIterable();
+        }
+
+        return false;
     }
 
-    /**
-     * @param TypeVisitorInterface $visitor
-     */
-    public function accept(TypeVisitorInterface $visitor): void
+    public function isBuiltIn(): bool
     {
-        $visitor->visitIterable($this);
+        return false;
     }
 
-    /**
-     * @param mixed $value
-     * @param bool  $strict
-     *
-     * @return bool
-     */
-    public function acceptValue($value, bool $strict): bool
-    {
-        return is_iterable($value);
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
+    public function __toString(): string
     {
         return 'iterable';
     }

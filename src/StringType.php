@@ -4,43 +4,24 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
-/**
- * Class StringType
- * @package Dgame\Type
- */
-final class StringType extends Type
+final class StringType extends ScalarType implements Defaultable, Castable
 {
-    /**
-     * @return string
-     */
+    public function cast(mixed $value): string
+    {
+        return (string) $value;
+    }
+
     public function getDefaultValue(): string
     {
         return '';
     }
 
-    /**
-     * @param TypeVisitorInterface $visitor
-     */
-    public function accept(TypeVisitorInterface $visitor): void
+    public function isBuiltIn(): bool
     {
-        $visitor->visitString($this);
+        return true;
     }
 
-    /**
-     * @param mixed $value
-     * @param bool  $strict
-     *
-     * @return bool
-     */
-    public function acceptValue($value, bool $strict): bool
-    {
-        return $strict ? is_string($value) : true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
+    public function __toString(): string
     {
         return 'string';
     }

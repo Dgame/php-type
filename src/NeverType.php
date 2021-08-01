@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
-final class NullType extends Type implements Defaultable
+final class NeverType extends Type
 {
-    public function getDefaultValue(): mixed
-    {
-        return null;
-    }
-
     public function isBuiltIn(): bool
     {
         return true;
@@ -18,6 +13,6 @@ final class NullType extends Type implements Defaultable
 
     public function __toString(): string
     {
-        return 'null';
+        return 'never';
     }
 }

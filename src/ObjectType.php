@@ -4,59 +4,64 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
-/**
- * Class ObjectType
- * @package Dgame\Type
- */
-class ObjectType extends Type
-{
-    /**
-     * @var string|null
-     */
-    private $typeName;
+use Closure;
+use ReflectionClass;
 
-    /**
-     * ObjectType constructor.
-     *
-     * @param string|null $typeName
-     */
-    public function __construct(string $typeName = null)
+class ObjectType extends Type implements Defaultable
+{
+    public function __construct(private string $name)
     {
-        $this->typeName = $typeName;
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getDefaultValue()
+    public function isAssignable(Type $other): bool
+    {
+        if ($other instanceof $this) {
+            if ($this->getFullQualifiedName() === $other->getFullQualifiedName()) {
+                return true;
+            }
+
+            if (is_subclass_of($other->getFullQualifiedName(), $this->getFullQualifiedName(), allow_string: true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isInvokable(): bool
+    {
+        if ($this->isClosure()) {
+            return true;
+        }
+
+        /** @phpstan-ignore-next-line */
+        $refl = new ReflectionClass($this->name);
+
+        return $refl->hasMethod('__invoke');
+    }
+
+    public function isClosure(): bool
+    {
+        return str_ends_with($this->name, Closure::class);
+    }
+
+    public function getDefaultValue(): mixed
     {
         return null;
     }
 
-    /**
-     * @param TypeVisitorInterface $visitor
-     */
-    public function accept(TypeVisitorInterface $visitor): void
+    public function isBuiltIn(): bool
     {
-        $visitor->visitObject($this);
+        return false;
     }
 
-    /**
-     * @param mixed $value
-     * @param bool  $strict
-     *
-     * @return bool
-     */
-    public function acceptValue($value, bool $strict): bool
+    public function __toString(): string
     {
-        return is_object($value) || $value === null;
+        return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription(): string
+    public function getFullQualifiedName(): string
     {
-        return $this->typeName ?? 'object';
+        return $this->name;
     }
 }

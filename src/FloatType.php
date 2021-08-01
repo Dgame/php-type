@@ -4,43 +4,29 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
-/**
- * Class FloatType
- * @package Dgame\Type
- */
-final class FloatType extends Type
+final class FloatType extends NumberType
 {
-    /**
-     * @return float
-     */
+    public function isAssignable(Type $other): bool
+    {
+        return $other instanceof $this || $other instanceof IntType;
+    }
+
+    public function cast(mixed $value): float
+    {
+        return (float) $value;
+    }
+
     public function getDefaultValue(): float
     {
         return 0.0;
     }
 
-    /**
-     * @param TypeVisitorInterface $visitor
-     */
-    public function accept(TypeVisitorInterface $visitor): void
+    public function isBuiltIn(): bool
     {
-        $visitor->visitFloat($this);
+        return true;
     }
 
-    /**
-     * @param mixed $value
-     * @param bool  $strict
-     *
-     * @return bool
-     */
-    public function acceptValue($value, bool $strict): bool
-    {
-        return $strict ? (is_float($value) || is_int($value)) : is_numeric($value);
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
+    public function __toString(): string
     {
         return 'float';
     }

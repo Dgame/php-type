@@ -4,43 +4,27 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
-/**
- * Class CallableType
- * @package Dgame\Type
- */
 final class CallableType extends Type
 {
-    /**
-     * @return mixed|null
-     */
-    public function getDefaultValue()
+    public function isAssignable(Type $other): bool
     {
-        return null;
+        if ($other instanceof $this) {
+            return true;
+        }
+
+        if ($other instanceof ObjectType && $other->isInvokable()) {
+            return true;
+        }
+
+        return false;
     }
 
-    /**
-     * @param TypeVisitorInterface $visitor
-     */
-    public function accept(TypeVisitorInterface $visitor): void
+    public function isBuiltIn(): bool
     {
-        $visitor->visitCallable($this);
+        return false;
     }
 
-    /**
-     * @param mixed $value
-     * @param bool  $strict
-     *
-     * @return bool
-     */
-    public function acceptValue($value, bool $strict): bool
-    {
-        return is_callable($value);
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
+    public function __toString(): string
     {
         return 'callable';
     }

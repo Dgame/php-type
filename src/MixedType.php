@@ -4,51 +4,24 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
-/**
- * Class MixedType
- * @package Dgame\Type
- */
-final class MixedType extends Type
+final class MixedType extends Type implements Defaultable
 {
-    /**
-     * @return mixed|null
-     */
-    public function getDefaultValue()
+    public function isAssignable(Type $other): bool
+    {
+        return true;
+    }
+
+    public function getDefaultValue(): mixed
     {
         return null;
     }
 
-    /**
-     * @param TypeVisitorInterface $visitor
-     */
-    public function accept(TypeVisitorInterface $visitor): void
-    {
-        $visitor->visitMixed($this);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNullable(): bool
+    public function isBuiltIn(): bool
     {
         return true;
     }
 
-    /**
-     * @param mixed $value
-     * @param bool  $strict
-     *
-     * @return bool
-     */
-    public function acceptValue($value, bool $strict): bool
-    {
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
+    public function __toString(): string
     {
         return 'mixed';
     }

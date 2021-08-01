@@ -4,141 +4,80 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
-/**
- * Class ArrayType
- * @package Dgame\Type
- */
-final class ArrayType extends Type
+final class ArrayType extends Type implements Defaultable, Castable
 {
-    /**
-     * @var Type|null
-     */
-    private $valueType;
-    /**
-     * @var Type|null
-     */
-    private $indexType;
-
-    /**
-     * ArrayType constructor.
-     *
-     * @param Type|null $valueType
-     * @param Type|null $indexType
-     */
-    public function __construct(Type $valueType = null, Type $indexType = null)
+    public function __construct(private ?Type $valueType = null, private ?Type $keyType = null)
     {
-        $this->valueType = $valueType;
-        $this->indexType = $indexType;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasIndexType(): bool
+    public function getValueType(): ?Type
     {
-        return $this->indexType !== null;
+        return $this->valueType;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasValueType(): bool
+    public function getKeyType(): ?Type
     {
-        return $this->valueType !== null;
+        return $this->keyType;
     }
 
-    /**
-     * @return array
-     */
+    public function isAssignable(Type $other): bool
+    {
+        if (!($other instanceof $this)) {
+            return false;
+        }
+
+        return $this->isAssignableValue($other) && $this->isAssignableKey($other);
+    }
+
+    private function isAssignableValue(self $other): bool
+    {
+        if ($this->valueType === null || $other->valueType === null) {
+            return true; // We cannot identify the type so we have to assume it is mixed to prevent false-positives
+        }
+
+        return $other->valueType instanceof $this->valueType || $other->valueType instanceof MixedType;
+    }
+
+    private function isAssignableKey(self $other): bool
+    {
+        if ($this->keyType === null || $other->keyType === null) {
+            return true; // We cannot identify the type so we have to assume it is mixed to prevent false-positives
+        }
+
+        return $other->keyType instanceof $this->keyType || $other->keyType instanceof MixedType;
+    }
+
+    /** @phpstan-ignore-next-line */
     public function getDefaultValue(): array
     {
         return [];
     }
 
-    /**
-     * @param TypeVisitorInterface $visitor
-     */
-    public function accept(TypeVisitorInterface $visitor): void
+    /** @phpstan-ignore-next-line */
+    public function cast(mixed $value): array
     {
-        $visitor->visitArray($this);
+        return (array) $value;
     }
 
-    /**
-     * @param mixed $value
-     * @param bool  $strict
-     *
-     * @return bool
-     */
-    public function acceptValue($value, bool $strict): bool
+    public function isBuiltIn(): bool
     {
-        if ($this->valueType === null) {
-            return is_array($value);
-        }
-
-        if (!is_array($value)) {
-            $value = [$value];
-        }
-
-        foreach ($value as $key => $val) {
-            if (!$this->valueType->acceptValue($val, $strict)) {
-                return false;
-            }
-
-            if ($this->indexType !== null && !$this->indexType->acceptValue($key, $strict)) {
-                return false;
-            }
-        }
-
         return true;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription(): string
+    public function __toString(): string
     {
-        if ($this->valueType !== null) {
-            if ($this->indexType !== null) {
-                return sprintf('array<%s, %s>', $this->indexType->getDescription(), $this->valueType->getDescription());
-            }
+        if ($this->valueType !== null && $this->keyType !== null) {
+            return 'array<' . $this->keyType->getName() . ', ' . $this->valueType->getName() . '>';
+        }
 
-            return sprintf('%s[]', $this->valueType->getDescription());
+        if ($this->valueType !== null) {
+            return  'array<mixed, ' . $this->valueType->getName() . '>';
+        }
+
+        if ($this->keyType !== null) {
+            return  'array<' . $this->keyType->getName() . ', mixed>';
         }
 
         return 'array';
-    }
-
-    /**
-     * @return Type
-     */
-    public function getBasicType(): Type
-    {
-        $type = $this->valueType;
-        while ($type !== null) {
-            $resolver = new TypeResolver($type);
-            $array    = $resolver->getArrayType();
-            if ($array === null) {
-                break;
-            }
-            $type = $array->getValueType();
-        }
-
-        return $type ?? new MixedType();
-    }
-
-    /**
-     * @return Type
-     */
-    public function getIndexType(): Type
-    {
-        return $this->indexType ?? new IntType();
-    }
-
-    /**
-     * @return Type|null
-     */
-    public function getValueType(): ?Type
-    {
-        return $this->valueType;
     }
 }

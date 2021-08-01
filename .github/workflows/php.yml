@@ -7,13 +7,15 @@ on:
       - synchronize
       - reopened
       - ready_for_review
+    paths:
+      - '**/*.php'
 
 jobs:
-  test:
+  lint-and-test:
     strategy:
       matrix:
         operating-system: ['ubuntu-latest']
-        php-versions: ['7.3', '7.4', '8.0']
+        php-versions: ['8.0']
     runs-on: ${{ matrix.operating-system }}
     if: github.event.pull_request.draft == false
     steps:
@@ -39,7 +41,6 @@ jobs:
           php -v
           php -m
           composer --version
-
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
@@ -51,8 +52,17 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
+      - name: Run composer validate
+        run: composer validate
+
       - name: Install dependencies
         run: composer install --no-interaction --no-suggest --no-scripts --prefer-dist --ansi
+
+      - name: Run phpcstd
+        run: vendor/bin/phpcstd --ci --ansi
+
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Run Unit tests
         run: composer test --ansi
