@@ -8,7 +8,7 @@ use BadMethodCallException;
 
 final class UnionType extends Type
 {
-    /** @var Type[]  */
+    /** @var Type[] */
     private array $types = [];
 
     public function __construct(Type $type1, Type $type2, Type ...$types)
@@ -29,8 +29,23 @@ final class UnionType extends Type
 
     public function hasDefaultValue(): bool
     {
+        if ($this->allowsNull()) {
+            return true;
+        }
+
         foreach ($this->types as $type) {
             if ($type instanceof Defaultable) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isCastable(): bool
+    {
+        foreach ($this->types as $type) {
+            if ($type instanceof Castable) {
                 return true;
             }
         }
@@ -58,6 +73,17 @@ final class UnionType extends Type
         foreach ($this->types as $type) {
             if ($type instanceof Defaultable) {
                 return $type->getDefaultValue();
+            }
+        }
+
+        throw new BadMethodCallException(__METHOD__);
+    }
+
+    public function cast(mixed $value): mixed
+    {
+        foreach ($this->types as $type) {
+            if ($type instanceof Castable) {
+                return $type->cast($value);
             }
         }
 
