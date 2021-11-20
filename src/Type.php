@@ -10,6 +10,7 @@ use ReflectionParameter;
 use ReflectionProperty;
 use ReflectionType;
 use Stringable;
+use UnexpectedValueException;
 
 abstract class Type implements Stringable
 {
@@ -77,6 +78,32 @@ abstract class Type implements Stringable
         }
 
         return self::identify($name, $allowsNull);
+    }
+
+    public function asNonNullable(): self
+    {
+        if ($this->allowsNull()) {
+            return $this;
+        }
+
+        if ($this instanceof UnionType) {
+            return new UnionType(...array_filter($this->getTypes(), static fn(Type $type) => !($type instanceof NullType)));
+        }
+
+        throw new UnexpectedValueException('Only UnionTypes can contain null');
+    }
+
+    public function asNullable(): self
+    {
+        if ($this->allowsNull()) {
+            return $this;
+        }
+
+        if ($this instanceof UnionType) {
+            return new UnionType(new NullType(), ...$this->getTypes());
+        }
+
+        throw new UnexpectedValueException('Only UnionTypes can contain null');
     }
 
     public function getName(): string

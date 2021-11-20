@@ -101,12 +101,12 @@ final class UnionType extends Type
     public function isBuiltIn(): bool
     {
         foreach ($this->types as $type) {
-            if ($type->isBuiltIn()) {
-                return true;
+            if (!$type->isBuiltIn()) {
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     public function __toString(): string
