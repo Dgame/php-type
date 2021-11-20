@@ -82,7 +82,7 @@ abstract class Type implements Stringable
 
     public function asNonNullable(): self
     {
-        if ($this->allowsNull()) {
+        if (!$this->allowsNull()) {
             return $this;
         }
 
