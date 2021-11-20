@@ -87,7 +87,12 @@ abstract class Type implements Stringable
         }
 
         if ($this instanceof UnionType) {
-            return new UnionType(...array_filter($this->getTypes(), static fn(Type $type) => !($type instanceof NullType)));
+            $types = array_filter($this->getTypes(), static fn(Type $type) => !($type instanceof NullType));
+            if (count($types) === 0) {
+                throw new UnexpectedValueException('UnionType is empty');
+            }
+
+            return count($types) === 1 ? reset($types) : new UnionType(...$types);
         }
 
         throw new UnexpectedValueException('Only UnionTypes can contain null');
