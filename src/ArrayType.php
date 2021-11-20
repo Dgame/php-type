@@ -47,13 +47,19 @@ final class ArrayType extends Type implements Defaultable, Castable
         return $other->keyType instanceof $this->keyType || $other->keyType instanceof MixedType;
     }
 
-    /** @phpstan-ignore-next-line */
+    /**
+     * @return array{}
+     */
     public function getDefaultValue(): array
     {
         return [];
     }
 
-    /** @phpstan-ignore-next-line */
+    /**
+     * @param mixed $value
+     *
+     * @return array<int|string, mixed>
+     */
     public function cast(mixed $value): array
     {
         return (array) $value;

@@ -15,17 +15,6 @@ use Dgame\Type\Type;
 use Dgame\Type\UnionType;
 use PHPUnit\Framework\TestCase;
 
-/**
- *     final public function is(self $type): bool
- *
- *
- *
- *
- * public function allowsNull(): bool
- *
- *
- * abstract public function isBuiltIn(): bool;
- */
 final class TypeTest extends TestCase
 {
     /**

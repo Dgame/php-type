@@ -6,8 +6,8 @@ namespace Dgame\Type;
 
 final class ParentType extends ObjectType
 {
-    public function __construct()
+    public function __construct(string $name = 'parent')
     {
-        parent::__construct('parent');
+        parent::__construct($name);
     }
 }

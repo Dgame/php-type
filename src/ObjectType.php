@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Dgame\Type;
 
 use Closure;
-use ReflectionClass;
 
 class ObjectType extends Type implements Defaultable
 {
@@ -34,10 +33,7 @@ class ObjectType extends Type implements Defaultable
             return true;
         }
 
-        /** @phpstan-ignore-next-line */
-        $refl = new ReflectionClass($this->name);
-
-        return $refl->hasMethod('__invoke');
+        return method_exists($this->name, '__invoke');
     }
 
     public function isClosure(): bool

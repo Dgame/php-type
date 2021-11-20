@@ -6,13 +6,42 @@ namespace Dgame\Type;
 
 use InvalidArgumentException;
 use ReflectionNamedType;
+use ReflectionParameter;
+use ReflectionProperty;
+use ReflectionType;
 use Stringable;
 
 abstract class Type implements Stringable
 {
-    public static function fromReflection(ReflectionNamedType $type): self
+    public static function fromReflectionParameter(ReflectionParameter $parameter): self
     {
-        return self::fromName($type->getName(), allowsNull: $type->allowsNull());
+        $type = self::fromReflectionType($parameter->getType());
+
+        return self::resolve($type, $parameter);
+    }
+
+    public static function fromReflectionProperty(ReflectionProperty $property): self
+    {
+        $type = self::fromReflectionType($property->getType());
+
+        return self::resolve($type, $property);
+    }
+
+    public static function fromReflectionType(?ReflectionType $type): self
+    {
+        if ($type === null) {
+            return new MixedType();
+        }
+
+        if ($type instanceof ReflectionNamedType) {
+            return self::identify($type->getName(), $type->allowsNull());
+        }
+
+        if ($type->allowsNull()) {
+            return new UnionType(new MixedType(), new NullType());
+        }
+
+        return new MixedType();
     }
 
     public static function fromValue(mixed $value): self
@@ -20,7 +49,7 @@ abstract class Type implements Stringable
         if (is_array($value) && $value !== [] && self::isHomogenous($value)) {
             return new ArrayType(
                 valueType: self::fromValue(current($value)),
-                keyType: self::fromValue(key($value))
+                keyType:   self::fromValue(key($value))
             );
         }
 
@@ -89,7 +118,7 @@ abstract class Type implements Stringable
         }
 
         $firstValue = current($values);
-        $firstKey = key($values);
+        $firstKey   = key($values);
 
         foreach ($values as $key => $value) {
             if (gettype($value) !== gettype($firstValue)) {
@@ -107,8 +136,8 @@ abstract class Type implements Stringable
     private static function identify(string $name, bool $allowsNull = false): self
     {
         $arrayLevel = substr_count($name, '[]');
-        $name = rtrim($name, '[]');
-        $type = match (strtolower($name)) {
+        $name       = rtrim($name, '[]');
+        $type       = match (strtolower($name)) {
             'callable' => $allowsNull ? new UnionType(new CallableType(), new NullType()) : new CallableType(),
             'false' => $allowsNull ? new UnionType(new FalseType(), new NullType()) : new FalseType(),
             'iterable' => $allowsNull ? new UnionType(new IterableType(), new NullType()) : new IterableType(),
@@ -150,7 +179,7 @@ abstract class Type implements Stringable
 
     private static function parseArray(string $name, bool $allowsNull): self
     {
-        if (\Safe\preg_match('/^array<(.+?)\,(.+?)>$/S', $name, $matches) === 1) {
+        if (\Safe\preg_match('/^array<(.+?),(.+?)>$/S', $name, $matches) === 1) {
             $type = new ArrayType(valueType: self::fromName($matches[2]), keyType: self::fromName($matches[1]));
         } elseif (\Safe\preg_match('/^array<(.+?)>$/S', $name, $matches) === 1) {
             $type = new ArrayType(valueType: self::fromName($matches[1]), keyType: new IntType());
@@ -159,5 +188,43 @@ abstract class Type implements Stringable
         }
 
         return $allowsNull ? new UnionType($type, new NullType()) : $type;
+    }
+
+    private static function resolve(self $type, ReflectionParameter|ReflectionProperty $reflection): self
+    {
+        if ($type instanceof SelfType || $type instanceof StaticType) {
+            $declaringClass = $reflection->getDeclaringClass();
+            if ($declaringClass !== null) {
+                $class = $type::class;
+
+                return new $class($declaringClass->getName());
+            }
+        }
+
+        if ($type instanceof ParentType) {
+            $declaringClass = $reflection->getDeclaringClass();
+            if ($declaringClass !== null) {
+                $parent = $declaringClass->getParentClass();
+                if ($parent !== false) {
+                    return new ParentType($parent->getName());
+                }
+            }
+        }
+
+        if ($type instanceof UnionType) {
+            return self::resolveUnionType($type, $reflection);
+        }
+
+        return $type;
+    }
+
+    private static function resolveUnionType(UnionType $type, ReflectionParameter|ReflectionProperty $reflection): UnionType
+    {
+        $subTypes = [];
+        foreach ($type->getTypes() as $subType) {
+            $subTypes[] = self::resolve($subType, $reflection);
+        }
+
+        return new UnionType(...$subTypes);
     }
 }

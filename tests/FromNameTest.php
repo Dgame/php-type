@@ -11,10 +11,12 @@ use Dgame\Type\IntType;
 use Dgame\Type\MixedType;
 use Dgame\Type\NullType;
 use Dgame\Type\ObjectType;
+use Dgame\Type\SelfType;
 use Dgame\Type\StringType;
 use Dgame\Type\Type;
 use Dgame\Type\UnionType;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 final class FromNameTest extends TestCase
 {
@@ -52,5 +54,36 @@ final class FromNameTest extends TestCase
         yield 'string[]' => ['string[]', new ArrayType(new StringType(), new IntType())];
         yield 'object' => ['object', new ObjectType('object')];
         yield self::class => [self::class, new ObjectType(self::class)];
+    }
+
+    public function testSelf(): void
+    {
+        $object = new class() {
+            public function test(self $me, ?self $next): void { }
+        };
+
+        $reflection = new ReflectionClass($object);
+        $method = $reflection->getMethod('test');
+        $parameter = $method->getParameters()[0];
+
+        $type = Type::fromReflectionParameter($parameter);
+        $this->assertInstanceOf(SelfType::class, $type);
+        $this->assertNotEquals('self', $type->getName());
+        $this->assertEquals($object::class, $type->getName());
+    }
+
+    public function testNullableSelf(): void
+    {
+        $object = new class() {
+            public function test(?self $maybe): void { }
+        };
+
+        $reflection = new ReflectionClass($object);
+        $method = $reflection->getMethod('test');
+        $parameter = $method->getParameters()[0];
+
+        $type = Type::fromReflectionParameter($parameter);
+        $this->assertInstanceOf(UnionType::class, $type);
+        $this->assertEquals($object::class . '|null', $type->getName());
     }
 }

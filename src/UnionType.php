@@ -16,6 +16,14 @@ final class UnionType extends Type
         array_push($this->types, $type1, $type2, ...$types);
     }
 
+    /**
+     * @return Type[]
+     */
+    public function getTypes(): array
+    {
+        return $this->types;
+    }
+
     public function isAssignable(Type $other): bool
     {
         foreach ($this->types as $type) {

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
-use ReflectionClass;
-
 final class IterableType extends Type
 {
     public function isAssignable(Type $other): bool
@@ -15,8 +13,7 @@ final class IterableType extends Type
         }
 
         if ($other instanceof ObjectType) {
-            /** @phpstan-ignore-next-line */
-            return (new ReflectionClass($other->getFullQualifiedName()))->isIterable();
+            return method_exists($other->getFullQualifiedName(), '__invoke');
         }
 
         return false;
