@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Dgame\Type;
 
+use Stringable;
+
 final class StringType extends ScalarType implements Defaultable, Castable
 {
     public function cast(mixed $value): string
     {
-        return (string) $value;
+        return is_scalar($value) || ($value instanceof Stringable) ? (string) $value : '';
     }
 
     public function getDefaultValue(): string

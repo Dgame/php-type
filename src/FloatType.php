@@ -13,7 +13,7 @@ final class FloatType extends NumberType
 
     public function cast(mixed $value): float
     {
-        return (float) $value;
+        return is_numeric($value) ? (float) $value : 0.0;
     }
 
     public function getDefaultValue(): float

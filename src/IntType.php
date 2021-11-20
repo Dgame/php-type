@@ -8,7 +8,7 @@ class IntType extends NumberType
 {
     public function cast(mixed $value): int
     {
-        return (int) $value;
+        return is_numeric($value) ? (int) $value : 0;
     }
 
     public function getDefaultValue(): int
