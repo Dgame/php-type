@@ -108,7 +108,7 @@ abstract class Type implements Stringable
             return new UnionType(new NullType(), ...$this->getTypes());
         }
 
-        throw new UnexpectedValueException('Only UnionTypes can contain null');
+        return new UnionType(new NullType(), $this);
     }
 
     public function getName(): string
