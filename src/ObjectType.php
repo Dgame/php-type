@@ -14,7 +14,7 @@ class ObjectType extends Type implements Defaultable
 
     public function isAssignable(Type $other): bool
     {
-        if ($other instanceof $this) {
+        if ($other instanceof self) {
             if ($this->getFullQualifiedName() === $other->getFullQualifiedName()) {
                 return true;
             }
